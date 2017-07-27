@@ -95,7 +95,7 @@ class connectFour(gamePuzzle):
                 str += self.board[i][j]
             print(str)
 
-    def single_player(self, player1 = "p1", player2 = "computer", difficulty):
+    def single_player(self,difficulty, player1 = "p1", player2 = "computer"):
         while True:
             for player in [player1, player2]:
                 print ("It is " + player + "'s turn")
@@ -163,9 +163,8 @@ class connectFour(gamePuzzle):
 
 
 if __name__ == "__main__":
-    connect_four = connectFour(num_cols=10, num_rows=10)
+    connect_four = connectFour(num_cols=7, num_rows=6)
     player1 = "Jerry"
     player2 = "Lester"
-    connect_four.print_puzzle()
-    #connect_four.dual_play(player1, player2)
+    connect_four.dual_play(player1, player2)
 
