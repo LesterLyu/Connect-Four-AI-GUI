@@ -95,8 +95,42 @@ class connectFour(gamePuzzle):
                 str += self.board[i][j]
             print(str)
 
-    def single_player(self, difficulty):
-        #TODO
+    def single_player(self, player1 = "p1", player2 = "computer", difficulty):
+        while True:
+            for player in [player1, player2]:
+                print ("It is " + player + "'s turn")
+                self.print_puzzle()
+                if player == player1:
+                    col = input ("please select the column from 0 to " + str(self.num_cols-1) + ": ")
+                    while not col.isdigit() or int(col) < 0 or int(col) >= self.num_cols or self.board[0][int(col)] != "0":
+                        if not col.isdigit() or int(col) < 0 or int(col) >= self.num_cols:
+                            col = input ("invalid input, try again: ")
+                        elif self.board[0][int(col)] != "0":
+                            col = input("column full, try again: ")
+                    self.next_move(player1, player2, player, int(col))
+
+
+                elif player == player2:
+                    # TODO
+                    if difficulty == "hard":
+                        break
+                    elif difficulty == "easy":
+                        break
+                    break
+
+
+                check = self.winning_check()
+                if check != "4":
+                    self.print_puzzle()
+                if check == "1":
+                    print(player1 + "win")
+                    return 0
+                elif check == "2":
+                    print(player2 + "win")
+                elif check == "3":
+                    print("It's a tie")
+                    return 0
+
         return 0
 
     def dual_play(self, player1="p1", player2="p2"):
@@ -129,9 +163,9 @@ class connectFour(gamePuzzle):
 
 
 if __name__ == "__main__":
-    connect_four = connectFour()
+    connect_four = connectFour(num_cols=10, num_rows=10)
     player1 = "Jerry"
     player2 = "Lester"
-    connect_four.dual_play(player1, player2)
-
+    connect_four.print_puzzle()
+    #connect_four.dual_play(player1, player2)
 
