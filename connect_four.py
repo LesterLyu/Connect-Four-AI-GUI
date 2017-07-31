@@ -7,16 +7,21 @@ class connectFour(game):
     num_cols = None
     num_empty = None
 
-    def __init__(self, num_rows=6, num_cols=7):
+    def __init__(self, num_rows=6, num_cols=7, board = None):
         if num_rows < 4 or num_cols < 4:
             raise Exception("Too small")
         self.num_rows = num_rows
         self.num_cols = num_cols
+        self.board = board
         self.reset()
 
     def reset(self):
         self.board = [["0"] * self.num_cols for i in range(self.num_rows)]
         self.num_empty = self.num_cols * self.num_rows
+
+    def get_copy(self):
+        return connectFour(self.num_rows, self.num_cols, [self.board[i][:] for i in range(self.num_rows)])
+
 
     def next_move(self, player1, player2, round, move):
         if round == player1:

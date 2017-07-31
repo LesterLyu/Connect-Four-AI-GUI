@@ -3,6 +3,9 @@ class game(object):
     def reset(self):
         raise Exception("No Implemented Exception")
 
+    def get_copy(self):
+        raise Exception("No Implemented Exception")
+
     def next_move(self, player1, player2, round,  move):
         raise Exception("No Implemented Exception")
 
@@ -17,4 +20,7 @@ class game(object):
 
 
     def print_game(self):
+        raise Exception("No Implemented Exception")
+
+    def get_copy(self):
         raise Exception("No Implemented Exception")
