@@ -1,5 +1,9 @@
 from game import *
 
+EMPTY_SLOT = " "
+TOKEN_1 = "X"
+TOKEN_2 = "O"
+
 class connectFour(game):
 
     board = None
@@ -16,7 +20,7 @@ class connectFour(game):
         self.reset()
 
     def reset(self):
-        self.board = [["0"] * self.num_cols for i in range(self.num_rows)]
+        self.board = [[EMPTY_SLOT] * self.num_cols for i in range(self.num_rows)]
         self.num_empty = self.num_cols * self.num_rows
 
     def get_copy(self):
@@ -25,21 +29,21 @@ class connectFour(game):
 
     def next_move(self, player1, player2, round, move):
         if round == player1:
-            token = "1"
+            token = TOKEN_1
         elif round == player2:
-            token = "2"
+            token = TOKEN_2
         else:
             raise Exception("No other player exception")
 
         if move < 0 or move > self.num_cols:
             raise Exception("Error column chosen")
 
-        if self.board[0][move] != "0":
+        if self.board[0][move] != EMPTY_SLOT:
             raise Exception("column full")
 
         pos = -1
         while pos < self.num_rows - 1:
-            if self.board[pos + 1][move] != "0":
+            if self.board[pos + 1][move] != EMPTY_SLOT:
                 break
             pos += 1
         self.board[pos][move] = token
@@ -47,7 +51,7 @@ class connectFour(game):
 
 
     def winning_check(self):
-        for token in ["1", "2"]:
+        for token in [TOKEN_1, TOKEN_2]:
             for direction in ["vertical", "horizontal", "LD", "RD"]:
                 if self._line_check(token, direction):
                     return token
@@ -114,10 +118,10 @@ class connectFour(game):
                 self.print_puzzle()
                 if player == player1:
                     col = input ("please select the column from 0 to " + str(self.num_cols-1) + ": ")
-                    while not col.isdigit() or int(col) < 0 or int(col) >= self.num_cols or self.board[0][int(col)] != "0":
+                    while not col.isdigit() or int(col) < 0 or int(col) >= self.num_cols or self.board[0][int(col)] != EMPTY_SLOT:
                         if not col.isdigit() or int(col) < 0 or int(col) >= self.num_cols:
                             col = input ("invalid input, try again: ")
-                        elif self.board[0][int(col)] != "0":
+                        elif self.board[0][int(col)] != EMPTY_SLOT:
                             col = input("column full, try again: ")
                     self.next_move(player1, player2, player, int(col))
 
@@ -134,10 +138,10 @@ class connectFour(game):
                 check = self.winning_check()
                 if check != "4":
                     self.print_puzzle()
-                if check == "1":
+                if check == TOKEN_1:
                     print(player1 + "win")
                     return 0
-                elif check == "2":
+                elif check == TOKEN_2:
                     print(player2 + "win")
                 elif check == "3":
                     print("It's a tie")
@@ -151,19 +155,19 @@ class connectFour(game):
                 print("It is " + player +"'s turn")
                 self.print_game_status()
                 col = input("please select the column from 0 to "+ str(self.num_cols-1) + ": ")
-                while not col.isdigit() or int(col) < 0 or int(col) >= self.num_cols or self.board[0][int(col)] != "0":
+                while not col.isdigit() or int(col) < 0 or int(col) >= self.num_cols or self.board[0][int(col)] != EMPTY_SLOT:
                     if not col.isdigit() or int(col) < 0 or int(col) >= self.num_cols:
                         col = input("invalid input, try again: ")
-                    elif self.board[0][int(col)] != "0":
+                    elif self.board[0][int(col)] != EMPTY_SLOT:
                         col = input("column full, try again: ")
                 self.next_move(player1, player2, player, int(col))
                 check = self.winning_check()
                 if check != "4":
                     self.print_game_status()
-                if check == "1":
+                if check == TOKEN_1:
                     print(player1 + " win")
                     return 0
-                elif check == "2":
+                elif check == TOKEN_2:
                     print(player2 + " win")
                     return 0
                 elif check == "3":
