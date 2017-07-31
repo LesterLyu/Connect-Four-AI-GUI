@@ -3,6 +3,8 @@ from game import *
 EMPTY_SLOT = " "
 TOKEN_1 = "X"
 TOKEN_2 = "O"
+NUM_COLS = 7
+NUM_ROWS = 6
 
 class connectFour(game):
 
@@ -11,7 +13,7 @@ class connectFour(game):
     num_cols = None
     num_empty = None
 
-    def __init__(self, num_rows=6, num_cols=7, board = None):
+    def __init__(self, num_rows=NUM_ROWS, num_cols=NUM_COLS, board = None):
         if num_rows < 4 or num_cols < 4:
             raise Exception("Too small")
         self.num_rows = num_rows
@@ -179,7 +181,7 @@ class connectFour(game):
 
 
 if __name__ == "__main__":
-    connect_four = connectFour(num_cols=7, num_rows=6)
+    connect_four = connectFour()
     player1 = "Jerry"
     player2 = "Lester"
     connect_four.dual_play(player1, player2)

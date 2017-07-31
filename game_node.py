@@ -6,8 +6,8 @@ class gameNode(object):
     def __init__(self, game):
         self.game_status = game
         self.extensions = []
-        self.min =  99999
-        self.max =  -99999
+        self.min = float("inf")
+        self.max = float("-inf")
         self.val = None
 
     def get_curr_game_status(self):
