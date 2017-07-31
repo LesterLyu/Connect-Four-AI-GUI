@@ -93,12 +93,19 @@ class connectFour(game):
         pass
         #TODO
 
+    # def print_game_status(self):
+    #     for i in range(self.num_rows):
+    #         str = ""
+    #         for j in range(self.num_cols):
+    #             str += self.board[i][j]
+    #         print(str)
     def print_game_status(self):
         for i in range(self.num_rows):
-            str = ""
+            print("\t", end="")
             for j in range(self.num_cols):
-                str += self.board[i][j]
-            print(str)
+                print("| " + str(self.board[i][j]), end=" ")
+            print("|")
+        print("\t  0   1   2   3   4   5   6 ")
 
     def single_player(self,difficulty, player1 = "p1", player2 = "computer"):
         while True:
