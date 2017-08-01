@@ -156,7 +156,10 @@ class ConnectFour:
             for j in range(self.num_cols):
                 print("| " + str(self.board[i][j]), end=" ")
             print("|")
-        print("\t  1   2   3   4   5   6   7")
+        num_str = "   "
+        for i in range(1, self.num_cols + 1):
+            num_str += "   " + str(i)
+        print(num_str)
 
     def single_player(self):
         while True:
@@ -216,10 +219,10 @@ class ConnectFour:
         return int(col) - 1
 
 if __name__ == "__main__":
-    #connect_four = ConnectFour(0, "Jerry", "Lester")
-    #connect_four.play()
+    connect_four = ConnectFour(0, "Jerry", "Lester")
+    connect_four.play()
 
-    connect_four2 = ConnectFour(1, "Jerry", difficulty=3)
-    connect_four2.play()
+    # connect_four2 = ConnectFour(1, "Jerry", difficulty=3)
+    # connect_four2.play()
 
 
