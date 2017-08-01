@@ -2,6 +2,7 @@
 # TODO
 
 - try to win the AI with difficult=3
+- if you won, try to fix the bug in heuristic function
 - alpha-beta prune
 - implement AI vs AI
 # HOW TO USE
