@@ -1,4 +1,22 @@
 # CSC384 Project
+# TODO
+
+- try to win the AI with difficult=3
+- alpha-beta prune
+- implement AI vs AI
+# HOW TO USE
+### two player mode
+```
+connect_four = ConnectFour(0, "Jerry", "Lester")
+connect_four.play()
+```
+### one player vs AI
+```
+connect_four2 = ConnectFour(1, "Jerry", difficulty=3)
+connect_four2.play()
+```
+
+--------
 Due August 14, 11:59 p.m.
 + Useful links:
   - https://en.wikipedia.org/wiki/Connect_Four
@@ -41,17 +59,3 @@ program were you to try again in the future. Other reflections are welcome.
 ## The Project Source Code (Due: August 14) ( submitted as csc384-source.zip)
 The realization of your project must run on teach.cs. All source code to run your completed project on
 teach.cs must be submitted, together with a README file explaining how to run the code, in a single zip file.
-
------
-### Lester current status:
-  - [ ] csc384 A3 (Due: July 30th 11:59 PM) 
-    - [x] module 1
-    - [x] module 2
-    - [ ] module 3
-    - [ ] module 4
-    - [ ] module 5
-  - [ ] csc373 A3 (Due: August 10th 11:59 PM)
-    - finished 0/5 
-    - assignment did not post
-  - [ ] csc369 A3 (Due: August 14th 11:55 pm) 
-    - finished 1/5 
