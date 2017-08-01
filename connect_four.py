@@ -1,3 +1,4 @@
+from game_node import *
 
 EMPTY_SLOT = " "
 TOKEN_1 = "X"
@@ -85,52 +86,42 @@ class ConnectFour:
         self.num_empty -= 1
 
     def winning_check(self):
-        for token in [TOKEN_1, TOKEN_2]:
-            for direction in ["vertical", "horizontal", "LD", "RD"]:
-                if self._line_check(token, direction):
-                    return token
-
         if self.num_empty == 0:
             return "3" #tie
+        for token in [TOKEN_1, TOKEN_2]:
+            for direction in ["vertical", "horizontal", "LD", "RD"]:
+                if self.line_check(token, direction):
+                    return token
         return "4" # incomplete
 
-    def _line_check(self, token, direction):
+    def line_check(self, token, direction, num=4):
         if direction == "vertical":
             for i in range(0, self.num_rows):
                 for j in range(0, self.num_cols - 3):
-                    if self.board[i][j:j+4] == 4*[token]:
+                    if num * [token] in self.board[i][j:j+num] and self.board[i][j:j+num].count(EMPTY_SLOT) == 4 - num:
                         return True
 
         if direction == "horizontal":
             for j in range(0, self.num_cols):
                 for i in range(0, self.num_rows - 3):
-                    if [self.board[k][j] for k in range(i, i+4)] == 4*[token]:
+                    test_str = [self.board[k][j] for k in range(i, i+num)]
+                    if num * [token] in test_str and test_str.count(EMPTY_SLOT) == 4 - num:
                         return True
-
 
         if direction == "LD": # top right to bottom left
             for i in range(3, self.num_rows):
                 for j in range(3, self.num_cols):
-                    if [self.board[i - k][j - k] for k in range(4)] == 4*[token]:
+                    test_str = [self.board[i - k][j - k] for k in range(num)]
+                    if num * [token] in test_str and test_str.count(EMPTY_SLOT) == 4 - num:
                         return True
-
 
         if direction == "RD": # top left to bottom right
             for i in range(3, self.num_rows):
                 for j in range(0, self.num_cols - 3):
-                    if [self.board[i - k][j + k] for k in range(4)] == 4 * [token]:
+                    test_str = [self.board[i - k][j + k] for k in range(num)]
+                    if num * [token] in test_str and test_str.count(EMPTY_SLOT) == 4 - num:
                         return True
         return False
-
-    def GTS(self, heur, difficulty):
-        pass
-        #TODO
-
-
-    def mini_max(self):
-        pass
-        #TODO
-
 
     def print_game_status(self):
         for i in range(self.num_rows):
@@ -150,13 +141,8 @@ class ConnectFour:
                     self.next_move(player, col)
 
                 elif player == self.p2:
-                    # TODO
-                    if self.difficulty == "hard":
-                        break
-                    elif self.difficulty == "easy":
-                        break
-                    break
-
+                    col = find_next_move(self, player, self.difficulty)
+                    self.next_move(player, col)
 
                 check = self.winning_check()
                 if check != "4":
@@ -202,10 +188,10 @@ class ConnectFour:
         return int(col) - 1
 
 if __name__ == "__main__":
-    connect_four = ConnectFour(0, "Jerry", "Lester")
-    connect_four.play()
+    #connect_four = ConnectFour(0, "Jerry", "Lester")
+    #connect_four.play()
 
-    connect_four2 = ConnectFour(1, "Jerry", difficulty=HARD)
+    connect_four2 = ConnectFour(1, "Jerry", difficulty=3)
     connect_four2.play()
 
 
