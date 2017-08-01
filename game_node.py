@@ -1,13 +1,7 @@
-from game import *
 from connect_four import *
 
-MAX_DIFFICALTY = -1
-HARD = 20
-NORMAL = 10
-EASY = 6
 
 class GameNode(object):
-
     def __init__(self, game):
         # make sure you do not modify the game instance directly.
         self.game_status = game
@@ -25,6 +19,27 @@ class GameNode(object):
         return self.extensions[:]
 
 
+def heuristic():
+
+    pass
+
+
+def extend(game):
+    """
+    Extend the game, return a list of all possible moves
+
+    :param game: ConnectFour
+    :return: list of game
+    """
+    res = []
+    for col in range(NUM_COLS):
+        new_game = game.get_copy()
+        try:
+            new_game.next_move(COMPUTER_NAME, col)
+        except:
+            pass
+        res.append(new_game)
+    return res
 
 
 def generate_game_tree(game, depth = EASY):

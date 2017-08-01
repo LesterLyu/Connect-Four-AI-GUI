@@ -18,9 +18,5 @@ class game(object):
     def GTS(self, heur, difficulty):
         raise Exception("No Implemented Exception")
 
-
     def print_game(self):
-        raise Exception("No Implemented Exception")
-
-    def get_copy(self):
         raise Exception("No Implemented Exception")
