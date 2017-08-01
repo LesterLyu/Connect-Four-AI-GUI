@@ -11,6 +11,8 @@ NUM_ROWS = 6
 COMPUTER_NAME = "computer"
 PLAYER_1_NAME = "p1"
 PLAYER_2_NAME = "p2"
+AI_1_NAME = "SIRI"
+AI_2_NAME = "CORTANA"
 
 # difficulty
 MAX_DIFFICULTY = -1
@@ -45,9 +47,13 @@ class ConnectFour:
         if mode == 0:
             self.play = self.dual_play
             self.p2 = p2
-        else:
+        elif mode == 1:
             self.play = self.single_player
             self.p2 = COMPUTER_NAME
+        elif mode == 2:
+            self.play = self.dual_ai
+            self.p1 = AI_1_NAME
+            self.p2 = AI_2_NAME
 
     def reset(self):
         """
@@ -239,11 +245,51 @@ class ConnectFour:
                 break
         return int(col) - 1
 
+
+def play_connect4():
+    game = None
+    game_type = None
+    mode = None
+    player1 = None
+    player2 = None
+    difficulty = None
+
+    print("Welcome to Connect4")
+    print ("Please select a game mode:")
+    while game_type == None:
+        game_type = str(input("Type 'Single' or 'Double' or 'AI': "))
+        if game_type == "Single":
+            mode = 1
+            while player1 == None:
+                player1 = str(input("Enter player's name:"))
+            while difficulty == None:
+                difficulty = int(input("Enter game difficulty 1 or 2 or 3:"))
+            game = ConnectFour(mode, player1, difficulty=difficulty)
+
+        elif game_type == "Double":
+            mode = 0
+            while player1 == None:
+                player1 = str(input("Enter player1's name:"))
+            while player2 == None:
+                player2 = str(input("Enter player2's name:"))
+            game = ConnectFour(mode, player1, player2)
+
+        elif game_type == "AI":
+            mode = 2
+            while difficulty == None:
+                difficulty = int(input("Enter game difficulty 1 or 2 or 3:"))
+            game = ConnectFour(mode, difficulty=difficulty)
+
+    print("Game initialized, good luck!")
+    return game
+
 if __name__ == "__main__":
+    connect4 = play_connect4()
+    connect4.play()
 
 
-    connect_four2 = ConnectFour(1, "Jerry", difficulty=3)
-    #connect_four2.play()
+    # connect_four2 = ConnectFour(1, "Jerry", difficulty=3)
+    # connect_four2.play()
     #connect_four2.single_player()
-    connect_four2.dual_ai()
+    #connect_four2.dual_ai()
 
