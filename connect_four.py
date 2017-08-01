@@ -207,6 +207,27 @@ class ConnectFour:
                     print("It's a tie")
                     return 0
 
+    def dual_ai(self):
+        while True:
+            for player in [self.p1, self.p2]:
+                print("It is " + player + "'s turn")
+                self.print_game_status()
+                col = find_next_move(self, player, self.difficulty)
+                self.next_move(player, col)
+                check = self.winning_check()
+                if check != "4":
+                    self.print_game_status()
+                if check == TOKEN_1:
+                    print(self.p1 + " win")
+                    return 0
+                elif check == TOKEN_2:
+                    print(self.p2 + " win")
+                    return 0
+                elif check == "3":
+                    print("It's a tie")
+                    return 0
+
+
     def _get_input(self):
         while True:
             col = input("please select the column from 1 to " + str(self.num_cols) + ": ")
@@ -219,10 +240,10 @@ class ConnectFour:
         return int(col) - 1
 
 if __name__ == "__main__":
-    connect_four = ConnectFour(0, "Jerry", "Lester")
-    connect_four.play()
 
-    # connect_four2 = ConnectFour(1, "Jerry", difficulty=3)
-    # connect_four2.play()
 
+    connect_four2 = ConnectFour(1, "Jerry", difficulty=3)
+    #connect_four2.play()
+    #connect_four2.single_player()
+    connect_four2.dual_ai()
 
