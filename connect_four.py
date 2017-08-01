@@ -256,17 +256,17 @@ def play_connect4():
 
     print("Welcome to Connect4")
     print ("Please select a game mode:")
-    while game_type == None:
+    while not game_type:
         game_type = str(input("Type 'Single' or 'Double' or 'AI': "))
-        if game_type == "Single":
+        if game_type.lower() == "single":
             mode = 1
             while player1 == None:
                 player1 = str(input("Enter player's name:"))
             while difficulty == None:
-                difficulty = int(input("Enter game difficulty 1 or 2 or 3:"))
+                difficulty = int(input("Enter game difficulty 1 or 2 or 3 or 4:"))
             game = ConnectFour(mode, player1, difficulty=difficulty)
 
-        elif game_type == "Double":
+        elif game_type.lower() == "double":
             mode = 0
             while player1 == None:
                 player1 = str(input("Enter player1's name:"))
@@ -274,11 +274,13 @@ def play_connect4():
                 player2 = str(input("Enter player2's name:"))
             game = ConnectFour(mode, player1, player2)
 
-        elif game_type == "AI":
+        elif game_type.lower() == "ai":
             mode = 2
             while difficulty == None:
                 difficulty = int(input("Enter game difficulty 1 or 2 or 3:"))
             game = ConnectFour(mode, difficulty=difficulty)
+        else:
+            game_type = None
 
     print("Game initialized, good luck!")
     return game
