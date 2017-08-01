@@ -1,4 +1,5 @@
 from game_node import *
+import copy
 
 EMPTY_SLOT = " "
 TOKEN_1 = "X"
@@ -35,11 +36,12 @@ class ConnectFour:
         self.mode = mode
         self.num_rows = num_rows
         self.num_cols = num_cols
-        self.board = board
         self.p1 = p1
         self.difficulty = difficulty
         self.num_empty = None
-        self.reset()
+        self.board = board
+        if not board:
+            self.reset()
         if mode == 0:
             self.play = self.dual_play
             self.p2 = p2
@@ -61,7 +63,7 @@ class ConnectFour:
         self.num_empty = self.num_cols * self.num_rows
 
     def get_copy(self):
-        return ConnectFour(self.mode, num_rows=self.num_rows, num_cols=self.num_cols, board=[self.board[i][:] for i in range(self.num_rows)])
+        return copy.deepcopy(self)
 
     def next_move(self, round, move):
         if round == self.p1:
@@ -94,32 +96,57 @@ class ConnectFour:
                     return token
         return "4" # incomplete
 
+    def _helper_check_valid(self, row, col):
+        """
+        看看棋子的下放是否有空格
+
+        :return: false if has space
+        """
+        for i in range(row+1, self.num_rows):
+            return self.board[i][col] != EMPTY_SLOT
+        return True
+
+
     def line_check(self, token, direction, num=4):
         if direction == "vertical":
             for i in range(0, self.num_rows):
                 for j in range(0, self.num_cols - 3):
-                    if num * [token] in self.board[i][j:j+num] and self.board[i][j:j+num].count(EMPTY_SLOT) == 4 - num:
+                    test_str = self.board[i][j:j+4]
+                    #print(test_str, test_str.count(token), test_str.count(EMPTY_SLOT) )
+                    if test_str.count(token) == num and test_str.count(EMPTY_SLOT) == 4 - num:
+                        for index in range(len(test_str)):
+                            if test_str[index] == EMPTY_SLOT and num != 4 and not self._helper_check_valid(i, j + index):
+                                #print("not valid")
+                                return False
+                       # print("valid")
                         return True
 
         if direction == "horizontal":
             for j in range(0, self.num_cols):
                 for i in range(0, self.num_rows - 3):
-                    test_str = [self.board[k][j] for k in range(i, i+num)]
-                    if num * [token] in test_str and test_str.count(EMPTY_SLOT) == 4 - num:
+                    test_str = [self.board[k][j] for k in range(i, i+4)]
+                    #print(test_str, test_str.count(token) , test_str.count(EMPTY_SLOT))
+                    if test_str.count(token) == num and test_str.count(EMPTY_SLOT) == 4 - num:
                         return True
 
         if direction == "LD": # top right to bottom left
             for i in range(3, self.num_rows):
                 for j in range(3, self.num_cols):
-                    test_str = [self.board[i - k][j - k] for k in range(num)]
-                    if num * [token] in test_str and test_str.count(EMPTY_SLOT) == 4 - num:
+                    test_str = [self.board[i - k][j - k] for k in range(4)]
+                    if test_str.count(token) == num and test_str.count(EMPTY_SLOT) == 4 - num:
+                        for index in range(len(test_str)):
+                            if test_str[index] == EMPTY_SLOT and num != 4 and not self._helper_check_valid(i - index, j - index):
+                                return False
                         return True
 
         if direction == "RD": # top left to bottom right
             for i in range(3, self.num_rows):
                 for j in range(0, self.num_cols - 3):
-                    test_str = [self.board[i - k][j + k] for k in range(num)]
-                    if num * [token] in test_str and test_str.count(EMPTY_SLOT) == 4 - num:
+                    test_str = [self.board[i - k][j + k] for k in range(4)]
+                    if test_str.count(token) == num and test_str.count(EMPTY_SLOT) == 4 - num:
+                        for index in range(len(test_str)):
+                            if test_str[index] == EMPTY_SLOT and num != 4 and not self._helper_check_valid(i - index, j + index):
+                                return False
                         return True
         return False
 
@@ -134,9 +161,9 @@ class ConnectFour:
     def single_player(self):
         while True:
             for player in [self.p1, self.p2]:
-                print("It is " + player + "'s turn")
-                self.print_game_status()
                 if player == self.p1:
+                    print("It is " + player + "'s turn")
+                    self.print_game_status()
                     col = self._get_input()
                     self.next_move(player, col)
 
@@ -148,10 +175,11 @@ class ConnectFour:
                 if check != "4":
                     self.print_game_status()
                 if check == TOKEN_1:
-                    print(self.p1 + "win")
+                    print(self.p1 + " win")
                     return 0
                 elif check == TOKEN_2:
-                    print(self.p2 + "win")
+                    print(self.p2 + " win")
+                    return 0
                 elif check == "3":
                     print("It's a tie")
                     return 0
@@ -181,7 +209,7 @@ class ConnectFour:
             col = input("please select the column from 1 to " + str(self.num_cols) + ": ")
             if not col.isdigit() or int(col) <= 0 or int(col) > self.num_cols:
                 print("invalid input!")
-            elif self.board[0][int(col)] != EMPTY_SLOT:
+            elif self.board[0][int(col)-1] != EMPTY_SLOT:
                 print("column full!")
             else:
                 break

@@ -1,3 +1,5 @@
+import random
+
 from connect_four import *
 
 
@@ -6,28 +8,53 @@ class GameNode(object):
         # make sure you do not modify the game instance directly.
         self.game = game
         self.player = player
+        self.val = None
         self.best_move = None
 
 
-def heuristic(game, max_player):
+# TODO
+# has known bugs
+# not completed, please complete this first (you can rewrite it)
+def heuristic(game, max_player, curr_player):
+    """
+    max_player wants to maximize its heuristic
+    min_player wants to minimize its heuristic
+
+    :param game:
+    :param max_player:
+    :return:
+    """
     value = 0
     min_player = game.p1 if max_player == game.p2 else game.p2
     tokens = {game.p1: TOKEN_1, game.p2: TOKEN_2}
+    #print(tokens)
+    #print(min_player, max_player)
+    #print("max_player=", max_player, " ", tokens[max_player], "curr_player=", curr_player)
     # check players
     for direction in ["vertical", "horizontal", "LD", "RD"]:
         for num in range(2, 5):
             if game.line_check(tokens[max_player], direction, num):
+                if num == 3 and curr_player == min_player:
+                    value = max(value, 200)
                 if num == 4:
-                    value += float("inf")
+                    value = max(value, 300)
                 value += num
+                #print("+++val=", value)
             if game.line_check(tokens[min_player], direction, num):
+                if num == 3 and curr_player == max_player:
+                    value += -200
+                elif num == 3:
+                    value += -100
                 if num == 4:
-                    value += float("-inf")
+                    value += -300
                 value -= num
+                #print("---val=", value)
+    #print("val=", value)
+    #game.print_game_status()
     return value
 
 
-def extend(node):
+def extend(node, next_player):
     """
     Extend the game, return a list of games that applied all possible moves
 
@@ -38,43 +65,53 @@ def extend(node):
     for col in range(NUM_COLS):
         new_game = node.game.get_copy()
         try:
-            new_game.next_move(COMPUTER_NAME, col)
+            new_game.next_move(next_player, col)
         except:
-            pass
-        next_player = node.game.p1 if node.player == node.game.p2 else node.game.p2
+            continue
         res.append((GameNode(new_game, next_player), col))
     return res
 
 
-def minimax(node, depth, maximize_player=True):
-
+def minimax(node, depth, curr_player, max_player):
     if depth == 0 or node.game.winning_check() != "4":  # is terminal
-        max_player = node.player if maximize_player else node.game.p1 if node.player == node.game.p2 else node.game.p2
-        return heuristic(node.game, max_player)
+        return heuristic(node.game, max_player, curr_player)
+    next_player = node.game.p1 if curr_player == node.game.p2 else node.game.p2
+    children = extend(node, curr_player)
+    #print("next_player", next_player)
     # maximizing player
-    if maximize_player:
+    if curr_player == max_player:
         best_value = float("-inf")
-        children = extend(node)
         for child, move in children:
-            val = minimax(child, depth - 1, False)
-            if best_value < val:
-                best_value = val
-                node.best_move = move
-        return best_value
+            child.val = minimax(child, depth - 1, next_player, max_player)
+            if best_value < child.val:
+                best_value = child.val
     # minimizing player
     else:
         best_value = float("inf")
-        children = extend(node)
         for child, move in children:
-            val = minimax(child, depth - 1, True)
-            if best_value > val:
-                best_value = val
-                node.best_move = move
-        node.value = best_value
-        return best_value
+            child.val = minimax(child, depth - 1, next_player, max_player)
+            if best_value > child.val:
+                best_value = child.val
+
+    # find the best move
+    move_list = []
+    best_move_list = []
+    for child, move in children:
+        move_list.append(move)
+        if child.val == best_value:
+            best_move_list.append(move)
+    if len(best_move_list) == 0:
+        node.best_move = random.choice(move_list)
+    elif len(best_move_list) == 1:
+        node.best_move = best_move_list[0]
+    else:
+        node.best_move = random.choice(best_move_list)
+
+    return best_value
 
 
 def find_next_move(game, max_player, depth):
     node = GameNode(game, max_player)
-    minimax(node, depth)
+    val = minimax(node, depth, max_player, max_player)
+    #print("best_val=", val)
     return node.best_move
