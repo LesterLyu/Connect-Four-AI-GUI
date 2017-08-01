@@ -51,7 +51,33 @@ class TestGame(unittest.TestCase):
         result1 = heuristic(game1, COMPUTER_NAME, COMPUTER_NAME)
         self.assertNotEqual(result1, 0)
 
+    def test_heuristic_3(self):
 
+        board2 = [[' ', ' ', ' ', ' ', ' ', ' ', ' '],
+                  [' ', ' ', ' ', ' ', ' ', ' ', ' '],
+                  ['X', ' ', ' ', ' ', ' ', ' ', ' '],
+                  ['X', ' ', ' ', ' ', ' ', ' ', ' '],
+                  ['X', ' ', ' ', ' ', ' ', ' ', ' '],
+                  ['O', 'O', 'O', ' ', ' ', ' ', ' ']]
+
+        game2 = ConnectFour(1, "Jerry", difficulty=1, board=board2)
+        # next player is Computer
+        result2 = heuristic(game2, COMPUTER_NAME, "Jerry")
+        self.assertGreaterEqual(result2, 200)
+
+    def test_heuristic_4(self):
+
+        board2 = [[' ', ' ', ' ', ' ', ' ', ' ', ' '],
+                  [' ', ' ', ' ', ' ', ' ', ' ', ' '],
+                  ['X', ' ', ' ', ' ', ' ', ' ', ' '],
+                  ['X', ' ', ' ', ' ', ' ', ' ', ' '],
+                  ['X', ' ', ' ', ' ', ' ', ' ', ' '],
+                  ['O', 'O', 'O', ' ', ' ', ' ', ' ']]
+
+        game2 = ConnectFour(1, "Jerry", difficulty=1, board=board2)
+        # next player is Jerry
+        result2 = heuristic(game2, COMPUTER_NAME, COMPUTER_NAME)
+        self.assertLessEqual(result2, -200)
 
 
 

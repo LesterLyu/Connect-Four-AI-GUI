@@ -36,17 +36,17 @@ def heuristic(game, max_player, curr_player):
             if game.line_check(tokens[max_player], direction, num):
                 if num == 3 and curr_player == min_player:
                     value = max(value, 200)
+                    return value
                 if num == 4:
                     value = max(value, 300)
                 value += num
                 #print("+++val=", value)
             if game.line_check(tokens[min_player], direction, num):
                 if num == 3 and curr_player == max_player:
-                    value += -200
-                elif num == 3:
-                    value += -100
+                    value = min(value, -200)
+                    return value
                 if num == 4:
-                    value += -300
+                    value = min(value, -300)
                 value -= num
                 #print("---val=", value)
     #print("val=", value)

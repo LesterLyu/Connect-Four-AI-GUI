@@ -104,7 +104,7 @@ class ConnectFour:
 
     def _helper_check_valid(self, row, col):
         """
-        看看棋子的下放是否有空格
+        看看棋子的下方是否有空格
 
         :return: false if has space
         """
