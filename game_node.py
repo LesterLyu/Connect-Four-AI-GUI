@@ -29,7 +29,7 @@ def heuristic(game, max_player, curr_player):
     tokens = {game.p1: TOKEN_1, game.p2: TOKEN_2}
     #print(tokens)
     #print(min_player, max_player)
-    #print("max_player=", max_player, " ", tokens[max_player], "curr_player=", curr_player)
+    print("max_player=", max_player, " ", tokens[max_player], "curr_player=", curr_player)
     # check players
     for direction in ["vertical", "horizontal", "LD", "RD"]:
         for num in range(2, 5):
@@ -38,8 +38,8 @@ def heuristic(game, max_player, curr_player):
                 # next player is max_player
                 if num == 3 and curr_player == min_player:
                     value = max(value, 200)
-                    #print("val=", value)
-                    #game.print_game_status()
+                    print("val=", value)
+                    game.print_game_status()
                     return value
                 # next player is min_player
                 elif num == 3 and curr_player == max_player:
@@ -51,6 +51,8 @@ def heuristic(game, max_player, curr_player):
             if game.line_check(tokens[min_player], direction, num):
                 if num == 3 and curr_player == max_player:
                     value = min(value, -200)
+                    print("val=", value)
+                    game.print_game_status()
                     return value
                 elif num == 3 and curr_player == min_player:
                     value -= 100
@@ -58,8 +60,8 @@ def heuristic(game, max_player, curr_player):
                     value = min(value, -300)
                 value -= num
                 #print("---val=", value)
-    #print("val=", value)
-    #game.print_game_status()
+    print("val=", value)
+    game.print_game_status()
     return value
 
 
@@ -117,7 +119,7 @@ def minimax(node, depth, curr_player, max_player):
         node.best_move = best_move_list[0]
     else:
         node.best_move = random.choice(best_move_list)
-    #print("best_val=", best_value)
+    print("best_val=", best_value)
     return best_value
 
 

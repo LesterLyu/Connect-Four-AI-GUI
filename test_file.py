@@ -99,10 +99,23 @@ class TestGame(unittest.TestCase):
         # move = find_next_move(game1, COMPUTER_NAME, 4)
         # self.assertEqual(move, 3)
 
+    def test_line_check_1(self):
+        board1 = [[' ', ' ', ' ', ' ', ' ', ' ', ' '],
+                  [' ', ' ', ' ', ' ', ' ', ' ', ' '],
+                  [' ', ' ', 'O', ' ', ' ', ' ', ' '],
+                  [' ', 'O', 'X', 'O', 'O', ' ', ' '],
+                  [' ', 'X', 'X', 'O', 'X', ' ', ' '],
+                  ['X', 'O', 'X', 'X', 'O', 'O', 'O']]
+        game1 = ConnectFour(1, "Jerry", difficulty=1, board=board1)
+        game1.num_empty = 30  # input any number you want!
+        for direction in ["vertical", "horizontal", "LD", "RD"]:
+            res = game1.line_check("X", "horizontal", 3)
+            self.assertFalse(res)
+
     def test_move_2(self):
         board1 = [[' ', ' ', ' ', ' ', ' ', ' ', ' '],
                   [' ', ' ', ' ', ' ', ' ', ' ', ' '],
-                  [' ', ' ', ' ', ' ', ' ', ' ', ' '],
+                  [' ', ' ', ' ', 'O', ' ', ' ', ' '],
                   [' ', 'O', 'X', 'O', 'O', ' ', ' '],
                   [' ', 'X', 'X', 'O', 'X', ' ', ' '],
                   ['X', 'O', 'X', 'X', 'O', 'O', 'O']]
@@ -122,10 +135,10 @@ class TestGame(unittest.TestCase):
 
         game1 = ConnectFour(1, "Jerry", difficulty=1, board=board1)
         game1.num_empty = 30  # input any number you want!
-        move = find_next_move(game1, COMPUTER_NAME, 1)
+        move = find_next_move(game1, COMPUTER_NAME, 4)
         self.assertEqual(move, 3)
-        move = find_next_move(game1, COMPUTER_NAME, 2)
-        self.assertEqual(move, 3)
+        # move = find_next_move(game1, COMPUTER_NAME, 2)
+        # self.assertEqual(move, 3)
 
     def test_move_4(self):
         board1 = [[' ', ' ', ' ', ' ', ' ', ' ', ' '],
@@ -137,7 +150,7 @@ class TestGame(unittest.TestCase):
 
         game1 = ConnectFour(1, "Jerry", difficulty=1, board=board1)
         game1.num_empty = 30  # input any number you want!
-        move = find_next_move(game1, COMPUTER_NAME, 1)
+        move = find_next_move(game1, COMPUTER_NAME, 4)
         self.assertEqual(move, 2)
         move = find_next_move(game1, COMPUTER_NAME, 2)
         self.assertEqual(move, 2)
