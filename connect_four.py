@@ -173,11 +173,11 @@ class ConnectFour:
         return player_lst
 
     def single_player(self):
-        player_lst = self.random_start()
+        # player_lst = self.random_start()
         count = 0
         while True:
-             # for player in [self.p1, self.p2]:
-            for player in player_lst:
+            for player in [self.p2, self.p1]:
+            # for player in player_lst:
                 if player == self.p1:
                     print("It is " + player + "'s turn")
                     if count == 0:
