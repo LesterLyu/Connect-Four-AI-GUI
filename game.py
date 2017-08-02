@@ -20,3 +20,6 @@ class game(object):
 
     def print_game(self):
         raise Exception("No Implemented Exception")
+
+    def random_start(self):
+        raise Exception("No Implemented Exception")
