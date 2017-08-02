@@ -92,13 +92,12 @@ class TestGame(unittest.TestCase):
         game1.num_empty = 30  # input any number you want!
         move = find_next_move(game1, COMPUTER_NAME, 1)
         self.assertEqual(move, 3)
-        # move = find_next_move(game1, COMPUTER_NAME, 2)
-        # self.assertEqual(move, 3)
+        move = find_next_move(game1, COMPUTER_NAME, 2)
+        self.assertEqual(move, 3)
         # move = find_next_move(game1, COMPUTER_NAME, 3)
         # self.assertEqual(move, 3)
         # move = find_next_move(game1, COMPUTER_NAME, 4)
         # self.assertEqual(move, 3)
-
 
     def test_move_2(self):
         board1 = [[' ', ' ', ' ', ' ', ' ', ' ', ' '],
@@ -117,14 +116,31 @@ class TestGame(unittest.TestCase):
         board1 = [[' ', ' ', ' ', ' ', ' ', ' ', ' '],
                   [' ', ' ', ' ', ' ', ' ', ' ', ' '],
                   [' ', ' ', ' ', ' ', 'O', ' ', ' '],
-                  [' ', ' ', ' ', 'x', 'O', ' ', ' '],
-                  [' ', ' ', ' ', 'x', 'X', ' ', ' '],
+                  [' ', ' ', ' ', 'X', 'O', ' ', ' '],
+                  [' ', ' ', ' ', 'X', 'X', ' ', ' '],
                   ['O', ' ', ' ', 'X', 'O', ' ', ' ']]
 
         game1 = ConnectFour(1, "Jerry", difficulty=1, board=board1)
         game1.num_empty = 30  # input any number you want!
         move = find_next_move(game1, COMPUTER_NAME, 1)
         self.assertEqual(move, 3)
+        move = find_next_move(game1, COMPUTER_NAME, 2)
+        self.assertEqual(move, 3)
+
+    def test_move_4(self):
+        board1 = [[' ', ' ', ' ', ' ', ' ', ' ', ' '],
+                  [' ', ' ', ' ', ' ', ' ', ' ', ' '],
+                  [' ', ' ', ' ', ' ', ' ', ' ', ' '],
+                  [' ', 'O', 'X', ' ', ' ', ' ', ' '],
+                  [' ', 'X', 'X', 'O', ' ', ' ', ' '],
+                  [' ', 'X', 'X', 'O', 'O', ' ', ' ']]
+
+        game1 = ConnectFour(1, "Jerry", difficulty=1, board=board1)
+        game1.num_empty = 30  # input any number you want!
+        move = find_next_move(game1, COMPUTER_NAME, 1)
+        self.assertEqual(move, 2)
+        move = find_next_move(game1, COMPUTER_NAME, 2)
+        self.assertEqual(move, 2)
 
 if (__name__ == "__main__"):
     runner = unittest.TextTestRunner(verbosity=1)
