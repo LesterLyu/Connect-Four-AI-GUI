@@ -167,18 +167,30 @@ class ConnectFour:
             num_str += "   " + str(i)
         print(num_str)
 
+    def random_start(self):
+        player_lst = [self.p1, self.p2]
+        random.shuffle(player_lst)
+        return player_lst
+
     def single_player(self):
+        player_lst = self.random_start()
+        count = 0
         while True:
-            for player in [self.p1, self.p2]:
+             # for player in [self.p1, self.p2]:
+            for player in player_lst:
                 if player == self.p1:
                     print("It is " + player + "'s turn")
-                    self.print_game_status()
+                    if count == 0:
+                        self.print_game_status()
                     col = self._get_input()
                     self.next_move(player, col)
 
                 elif player == self.p2:
+                    count += 1
+                    print("It is " + player + "'s turn")
                     col = find_next_move(self, player, self.difficulty)
                     self.next_move(player, col)
+                    self.print_game_status()
 
                 check = self.winning_check()
                 if check != "4":
@@ -288,6 +300,7 @@ def play_connect4():
 if __name__ == "__main__":
     connect4 = play_connect4()
     connect4.play()
+
 
 
     # connect_four2 = ConnectFour(1, "Jerry", difficulty=3)
