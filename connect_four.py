@@ -295,11 +295,21 @@ def play_connect4():
             game_type = None
 
     print("Game initialized, good luck!")
-    return game
+    game.play()
+    while True:
+        play_again = str(input("Would you like to play again? Enter 'yes' or 'no' "))
+        if play_again.lower() == 'y' or play_again.lower() == 'yes':
+            play_connect4()
+            break
+        elif play_again.lower() == 'n' or play_again.lower() == 'no':
+            print("Thanks for playing!")
+            break
+        else:
+            print("I don't understand... ")
 
 if __name__ == "__main__":
     connect4 = play_connect4()
-    connect4.play()
+    #connect4.play()
 
 
 
