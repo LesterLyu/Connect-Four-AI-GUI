@@ -158,7 +158,7 @@ class ConnectFour:
 
     def print_game_status(self):
         for i in range(self.num_rows):
-            print("\t", end="")
+            print("    ", end="")
             for j in range(self.num_cols):
                 print("| " + str(self.board[i][j]), end=" ")
             print("|")
