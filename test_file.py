@@ -101,7 +101,7 @@ class TestGame(unittest.TestCase):
 
         game1 = ConnectFour(1, "Jerry", difficulty=1, board=board1)
         game1.num_empty = 30  # input any number you want!
-        for i in range(2, 3):
+        for i in range(1, 5):
             move = find_next_move(game1, COMPUTER_NAME, i)
             self.assertEqual(move, 3)
 
@@ -128,7 +128,7 @@ class TestGame(unittest.TestCase):
 
         game1 = ConnectFour(1, "Jerry", difficulty=1, board=board1)
         game1.num_empty = 30  # input any number you want!
-        for i in range(3, 4):
+        for i in range(1, 5):
             move = find_next_move(game1, COMPUTER_NAME, i)
             self.assertEqual(move, 5)
 
@@ -183,8 +183,9 @@ class TestGame(unittest.TestCase):
 
         game1 = ConnectFour(1, "Jerry", difficulty=1, board=board1)
         game1.num_empty = 30  # input any number you want!
-        move = find_next_move(game1, COMPUTER_NAME, 4)
-        self.assertEqual(move, 2)
+        for i in range(1, 5):
+            move = find_next_move(game1, COMPUTER_NAME, 4)
+            self.assertEqual(move, 2)
 
 if (__name__ == "__main__"):
     runner = unittest.TextTestRunner(verbosity=1)
