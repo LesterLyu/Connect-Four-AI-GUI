@@ -31,41 +31,50 @@ def heuristic(game, max_player, curr_player):
     value = 0
     min_player = game.p1 if max_player == game.p2 else game.p2
     tokens = {game.p1: TOKEN_1, game.p2: TOKEN_2}
+    next_player = game.p1 if curr_player == game.p2 else game.p2
     #print(tokens)
     #print(min_player, max_player)
-    # print("max_player=", max_player, " ", tokens[max_player], "curr_player=", curr_player)
+    #print("max_player=", max_player, " ", tokens[max_player], "curr_player=", curr_player)
     # check players
-    for direction in ["vertical", "horizontal", "LD", "RD"]:
-        for num in range(2, 5):
-            # find the grade for max_player
-            if game.line_check(tokens[max_player], direction, num):
-                # next player is max_player
-                if num == 3 and curr_player == min_player:
-                    value = max(value, 200)
-                    #print("val=", value)
-                    #game.print_game_status()
-                    return value
-                # next player is min_player
-                elif num == 3 and curr_player == max_player:
-                    value += 100
-                if num == 4:
-                    value = max(value, 300)
-                value += num
-                #print("+++val=", value)
-            if game.line_check(tokens[min_player], direction, num):
-                if num == 3 and curr_player == max_player:
-                    #print("val=", value)
-                    #game.print_game_status()
-                    value = min(value, -200)
-                    #print("val=", value)
-                    #game.print_game_status()
-                    return value
-                elif num == 3 and curr_player == min_player:
-                    value -= 100
-                if num == 4:
-                    value = min(value, -300)
-                value -= num
-                #print("---val=", value)
+    for num in range(2, 5):
+        #print("===num=", num, "===")
+        max_has_num, min_has_num = 0, 0
+        for direction in ["vertical", "horizontal", "LD", "RD"]:
+            # re-write by Lester
+            max_has_num += game.line_check(tokens[max_player], direction, num)
+            min_has_num += game.line_check(tokens[min_player], direction, num)
+        if num == 2:
+            if max_has_num > 0:
+                value += num * max_has_num
+            if min_has_num > 0:
+                value -= num * min_has_num
+        elif num == 3:
+            # max player will win for sure
+            if max_has_num > 0 and next_player == max_player:
+                value += 200
+            # max player will win for sure
+            elif min_has_num > 0 and next_player == min_player:
+                value -= 200
+            # max player may win
+            elif max_has_num > 0 and next_player == min_player and not min_has_num > 0:
+                value += 100
+            # min player may win
+            elif min_has_num > 0 and next_player == max_player and not max_has_num > 0:
+                value -= 100
+            # max player will loss
+            elif max_has_num > 0 and min_has_num > 0 and next_player == min_player:
+                value -= 200
+            # min player will loss
+            elif max_has_num > 0 and min_has_num > 0 and next_player == max_player:
+                value += 200
+        elif num == 4:
+            if max_has_num > 0:
+                value = 300
+            elif min_has_num > 0:
+                value = -300
+            elif min_has_num > 0 and max_has_num > 0:
+                raise Exception("should not reach this")
+        #print("val=", value)
     #print("val=", value)
     #game.print_game_status()
     return value
@@ -135,14 +144,16 @@ def ab_pruning(node, depth, curr_player, max_player, alpha=ALPHA, beta=BETA):
         return heuristic(node.game, max_player, next_player)
 
     children = extend(node, curr_player)
+    new_children = []
     #print("next_player", next_player)
     # maximizing player
     if curr_player == max_player:
         best_value = float("-inf")
         for child, move in children:
-            child.val = ab_pruning(child, depth - 1, next_player, max_player)
-            if best_value < child.val:
-                best_value = child.val
+            new_children.append((child, move))
+            child.val = ab_pruning(child, depth - 1, next_player, max_player, alpha, beta)
+            best_value = max(best_value, child.val)
+            print("max_player, best val=", best_value, "move =", move)
             alpha = max(best_value, alpha)
             if beta <= alpha:
                 break
@@ -150,17 +161,19 @@ def ab_pruning(node, depth, curr_player, max_player, alpha=ALPHA, beta=BETA):
     else:
         best_value = float("inf")
         for child, move in children:
-            child.val = ab_pruning(child, depth - 1, next_player, max_player)
-            if best_value > child.val:
-                best_value = child.val
+            new_children.append((child, move))
+            child.val = ab_pruning(child, depth - 1, next_player, max_player, alpha, beta)
+            best_value = min(best_value, child.val)
+            print("min_player, best val=", best_value, "move =", move)
             beta = min(best_value, beta)
             if beta <= alpha:
                 break
 
     # find the best move
+
     move_list = []
     best_move_list = []
-    for child, move in children:
+    for child, move in new_children:
         move_list.append(move)
         if child.val == best_value:
             best_move_list.append(move)
@@ -170,13 +183,13 @@ def ab_pruning(node, depth, curr_player, max_player, alpha=ALPHA, beta=BETA):
         node.best_move = best_move_list[0]
     else:
         node.best_move = random.choice(best_move_list)
-    #print("best_val=", best_value)
+    print("best_move=", node.best_move)
     return best_value
 
 
 def find_next_move(game, max_player, depth):
     node = GameNode(game, max_player)
-    #val = minimax(node, depth, max_player, max_player)
-    val = ab_pruning(node,depth,max_player,max_player)
+    val = minimax(node, depth, max_player, max_player)
+    #val = ab_pruning(node,depth,max_player,max_player)
     #print("best_val=", val)
     return node.best_move

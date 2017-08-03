@@ -79,7 +79,6 @@ class TestGame(unittest.TestCase):
         result2 = heuristic(game2, COMPUTER_NAME, COMPUTER_NAME)
         self.assertLessEqual(result2, -200)
 
-
     def test_move_1(self):
         board1 = [[' ', ' ', ' ', ' ', ' ', ' ', ' '],
                   [' ', ' ', ' ', ' ', ' ', ' ', ' '],
@@ -90,14 +89,9 @@ class TestGame(unittest.TestCase):
 
         game1 = ConnectFour(1, "Jerry", difficulty=1, board=board1)
         game1.num_empty = 30  # input any number you want!
-        move = find_next_move(game1, COMPUTER_NAME, 1)
-        self.assertEqual(move, 3)
-        move = find_next_move(game1, COMPUTER_NAME, 2)
-        self.assertEqual(move, 3)
-        # move = find_next_move(game1, COMPUTER_NAME, 3)
-        # self.assertEqual(move, 3)
-        # move = find_next_move(game1, COMPUTER_NAME, 4)
-        # self.assertEqual(move, 3)
+        for i in range(2, 3):
+            move = find_next_move(game1, COMPUTER_NAME, i)
+            self.assertEqual(move, 3)
 
     def test_line_check_1(self):
         board1 = [[' ', ' ', ' ', ' ', ' ', ' ', ' '],
@@ -114,7 +108,7 @@ class TestGame(unittest.TestCase):
 
     def test_move_2(self):
         board1 = [[' ', ' ', ' ', ' ', ' ', ' ', ' '],
-                  [' ', ' ', ' ', ' ', ' ', ' ', ' '],
+                  [' ', ' ', ' ', 'X', ' ', ' ', ' '],
                   [' ', ' ', ' ', 'O', ' ', ' ', ' '],
                   [' ', 'O', 'X', 'O', 'O', ' ', ' '],
                   [' ', 'X', 'X', 'O', 'X', ' ', ' '],
@@ -122,8 +116,9 @@ class TestGame(unittest.TestCase):
 
         game1 = ConnectFour(1, "Jerry", difficulty=1, board=board1)
         game1.num_empty = 30  # input any number you want!
-        move = find_next_move(game1, COMPUTER_NAME, 1)
-        self.assertEqual(move, 2)
+        for i in range(1, 5):
+            move = find_next_move(game1, COMPUTER_NAME, i)
+            self.assertEqual(move, 5)
 
     def test_move_3(self):
         board1 = [[' ', ' ', ' ', ' ', ' ', ' ', ' '],
@@ -135,10 +130,9 @@ class TestGame(unittest.TestCase):
 
         game1 = ConnectFour(1, "Jerry", difficulty=1, board=board1)
         game1.num_empty = 30  # input any number you want!
-        move = find_next_move(game1, COMPUTER_NAME, 4)
-        self.assertEqual(move, 3)
-        # move = find_next_move(game1, COMPUTER_NAME, 2)
-        # self.assertEqual(move, 3)
+        for i in range(1, 5):
+            move = find_next_move(game1, COMPUTER_NAME, i)
+            self.assertEqual(move, 3)
 
     def test_move_4(self):
         board1 = [[' ', ' ', ' ', ' ', ' ', ' ', ' '],
@@ -150,10 +144,22 @@ class TestGame(unittest.TestCase):
 
         game1 = ConnectFour(1, "Jerry", difficulty=1, board=board1)
         game1.num_empty = 30  # input any number you want!
-        move = find_next_move(game1, COMPUTER_NAME, 4)
-        self.assertEqual(move, 2)
-        move = find_next_move(game1, COMPUTER_NAME, 2)
-        self.assertEqual(move, 2)
+        for i in range(1, 5):
+            move = find_next_move(game1, COMPUTER_NAME, i)
+            self.assertEqual(move, 2)
+
+    def test_move_5(self):
+        board1 = [[' ', ' ', ' ', ' ', ' ', ' ', ' '],
+                  [' ', ' ', ' ', ' ', ' ', ' ', ' '],
+                  [' ', ' ', ' ', ' ', ' ', ' ', ' '],
+                  [' ', ' ', ' ', ' ', 'X', ' ', ' '],
+                  ['O', ' ', ' ', 'O', 'X', ' ', ' '],
+                  ['X', ' ', ' ', 'O', 'X', ' ', 'O']]
+
+        game1 = ConnectFour(1, "Jerry", difficulty=1, board=board1)
+        game1.num_empty = 30  # input any number you want!
+        move = find_next_move(game1, COMPUTER_NAME, 1)
+        self.assertEqual(move, 4)
 
 if (__name__ == "__main__"):
     runner = unittest.TextTestRunner(verbosity=1)
