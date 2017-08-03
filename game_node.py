@@ -69,14 +69,14 @@ def heuristic(game, max_player, curr_player):
                 value += 200
         elif num == 4:
             if max_has_num > 0:
-                value = 300
+                value += 300
             elif min_has_num > 0:
-                value = -300
+                value += -300
             elif min_has_num > 0 and max_has_num > 0:
                 raise Exception("should not reach this")
-        #print("val=", value)
-    #print("val=", value)
-    #game.print_game_status()
+    #     print("val=", value)
+    # print("val=", value)
+    # game.print_game_status()
     return value
 
 
