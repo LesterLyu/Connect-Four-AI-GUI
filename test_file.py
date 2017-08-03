@@ -18,6 +18,18 @@ class TestGame(unittest.TestCase):
         result = game.winning_check()
         self.assertEqual(result, TOKEN_2)
 
+    def test_winning_check_2(self):
+        board1 = [[' ', ' ', ' ', ' ', ' ', ' ', ' '],
+                  [' ', ' ', ' ', 'X', ' ', ' ', ' '],
+                  [' ', ' ', ' ', 'O', ' ', ' ', ' '],
+                  [' ', 'O', 'X', 'O', 'O', ' ', ' '],
+                  [' ', 'X', 'X', 'O', 'X', 'O', ' '],
+                  ['X', 'O', 'X', 'X', 'O', 'O', 'O']]
+
+        game = ConnectFour(0, "Jerry", "Lester", board=board1)
+        result = game.winning_check()
+        self.assertEqual(result, TOKEN_2)
+
     def test_heuristic_1(self):
         board1 = [[' ', ' ', ' ', ' ', ' ', ' ', ' '],
                  ['O', ' ', ' ', ' ', ' ', ' ', ' '],
@@ -35,8 +47,8 @@ class TestGame(unittest.TestCase):
 
         game1 = ConnectFour(1, "Jerry", difficulty=1, board=board1)
         game2 = ConnectFour(1, "Jerry", difficulty=1, board=board2)
-        result1 = heuristic(game1, COMPUTER_NAME, COMPUTER_NAME)
-        result2 = heuristic(game2, COMPUTER_NAME, COMPUTER_NAME)
+        result1 = heuristic(game1, COMPUTER_NAME, COMPUTER_NAME, 1)
+        result2 = heuristic(game2, COMPUTER_NAME, COMPUTER_NAME, 1)
         self.assertGreater(result1, result2)
 
     def test_heuristic_2(self):
@@ -48,7 +60,7 @@ class TestGame(unittest.TestCase):
                  ['X', 'X', ' ', ' ', ' ', ' ', ' ']]
 
         game1 = ConnectFour(1, "Jerry", difficulty=1, board=board1)
-        result1 = heuristic(game1, COMPUTER_NAME, COMPUTER_NAME)
+        result1 = heuristic(game1, COMPUTER_NAME, COMPUTER_NAME, 1)
         self.assertNotEqual(result1, 0)
 
     def test_heuristic_3(self):
@@ -62,7 +74,7 @@ class TestGame(unittest.TestCase):
 
         game2 = ConnectFour(1, "Jerry", difficulty=1, board=board2)
         # next player is Computer
-        result2 = heuristic(game2, COMPUTER_NAME, "Jerry")
+        result2 = heuristic(game2, COMPUTER_NAME, "Jerry", 1)
         self.assertGreaterEqual(result2, 200)
 
     def test_heuristic_4(self):
@@ -76,7 +88,7 @@ class TestGame(unittest.TestCase):
 
         game2 = ConnectFour(1, "Jerry", difficulty=1, board=board2)
         # next player is Jerry
-        result2 = heuristic(game2, COMPUTER_NAME, COMPUTER_NAME)
+        result2 = heuristic(game2, COMPUTER_NAME, COMPUTER_NAME, 1)
         self.assertLessEqual(result2, -200)
 
     def test_move_1(self):
@@ -116,7 +128,7 @@ class TestGame(unittest.TestCase):
 
         game1 = ConnectFour(1, "Jerry", difficulty=1, board=board1)
         game1.num_empty = 30  # input any number you want!
-        for i in range(1, 5):
+        for i in range(3, 4):
             move = find_next_move(game1, COMPUTER_NAME, i)
             self.assertEqual(move, 5)
 

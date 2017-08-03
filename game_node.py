@@ -19,7 +19,7 @@ class GameNode(object):
 # TODO
 # has known bugs
 # not completed, please complete this first (you can rewrite it)
-def heuristic(game, max_player, curr_player):
+def heuristic(game, max_player, curr_player, depth):
     """
     max_player wants to maximize its heuristic
     min_player wants to minimize its heuristic
@@ -75,9 +75,9 @@ def heuristic(game, max_player, curr_player):
             elif min_has_num > 0 and max_has_num > 0:
                 raise Exception("should not reach this")
     #     print("val=", value)
-    # print("val=", value)
+    # print("val=", value * (depth + 1))
     # game.print_game_status()
-    return value
+    return value * (depth + 1)
 
 
 def extend(node, next_player):
@@ -102,7 +102,7 @@ def extend(node, next_player):
 def minimax(node, depth, curr_player, max_player):
     next_player = node.game.p1 if curr_player == node.game.p2 else node.game.p2
     if depth == 0 or node.game.winning_check() != "4":  # is terminal
-        return heuristic(node.game, max_player, next_player)
+        return heuristic(node.game, max_player, next_player, depth)
 
     children = extend(node, curr_player)
     #print("next_player", next_player)
@@ -141,7 +141,7 @@ def minimax(node, depth, curr_player, max_player):
 def ab_pruning(node, depth, curr_player, max_player, alpha=ALPHA, beta=BETA):
     next_player = node.game.p1 if curr_player == node.game.p2 else node.game.p2
     if depth == 0 or node.game.winning_check() != "4":  # is terminal
-        return heuristic(node.game, max_player, next_player)
+        return heuristic(node.game, max_player, next_player, depth)
 
     children = extend(node, curr_player)
     new_children = []
