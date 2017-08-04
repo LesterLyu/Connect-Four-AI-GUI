@@ -1,35 +1,39 @@
 # import the library
 from appJar import gui
+from threading import Thread
 
 EXIT_BUTTON = "Exit"
 RESTART_BUTTON = "Restart"
 
 
 class GUI:
-    def __init__(self):
+    def __init__(self, game):
         self.app = None
-        self.game = None
+        self.game = game
 
     # handle button events
     def press(self, button):
         if button == EXIT_BUTTON:
             self.app.stop()
         elif button == RESTART_BUTTON:
-            self.game.reset()
-            self.game.play(self)
-            self.update()
+            thread = Thread(target=self.reset, args=())
+            thread.start()
         else:
-            row = int(button[0])
             col = int(button[1])
-            self.game.play(self, col)
+            thread = Thread(target=self.game.play, args=(self, col,))
+            thread.start()
+
+    def reset(self):
+        self.game.reset()
+        self.game.play(self)
+        self.update()
 
     def update(self):
         for row in range(self.game.num_rows):
             for col in range(self.game.num_cols):
                 self.app.setButton(str(row) + str(col), self.game.board[row][col])
 
-    def init_window(self, game):
-        self.game = game
+    def init_window(self):
         # create a GUI variable called app
         self.app = gui("Connect Four", "600x550")
         #app.setBg("orange")
