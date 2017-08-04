@@ -1,11 +1,10 @@
 import random
 
 from connect_four import *
+from constants import Constants
 
 ALPHA = float("-inf")
 BETA = float("inf")
-
-
 
 class GameNode(object):
     def __init__(self, game, player):
@@ -30,7 +29,7 @@ def heuristic(game, max_player, curr_player, depth):
     """
     value = 0
     min_player = game.p1 if max_player == game.p2 else game.p2
-    tokens = {game.p1: TOKEN_1, game.p2: TOKEN_2}
+    tokens = {game.p1: Constants.TOKEN_1, game.p2: Constants.TOKEN_2}
     next_player = game.p1 if curr_player == game.p2 else game.p2
     #print(tokens)
     #print(min_player, max_player)
@@ -88,7 +87,7 @@ def extend(node, next_player):
     :return: list of game [(GameNode, move), (GameNode, move),...]
     """
     res = []
-    for col in range(NUM_COLS):
+    for col in range(Constants.NUM_COLS):
         new_game = node.game.get_copy()
         try:
             new_game.next_move(next_player, col)

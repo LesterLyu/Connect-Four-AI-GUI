@@ -1,32 +1,56 @@
 # import the library
 from appJar import gui
 
-# handle button events
-def press(button):
-    if button == "Cancel":
-        app.stop()
-    else:
-        usr = app.getEntry("Username")
-        pwd = app.getEntry("Password")
-        print("User:", usr, "Pass:", pwd)
+EXIT_BUTTON = "Exit"
+RESTART_BUTTON = "Restart"
 
-# create a GUI variable called app
-app = gui("Login Window", "400x200")
-app.setBg("orange")
-app.setFont(18)
 
-# add & configure widgets - widgets get a name, to help referencing them later
-app.addLabel("title", "Welcome to appJar")
-app.setLabelBg("title", "blue")
-app.setLabelFg("title", "orange")
+class GUI:
+    def __init__(self):
+        self.app = None
+        self.game = None
 
-app.addLabelEntry("Username")
-app.addLabelSecretEntry("Password")
+    # handle button events
+    def press(self, button):
+        if button == EXIT_BUTTON:
+            self.app.stop()
+        elif button == RESTART_BUTTON:
+            self.game.reset()
+            self.game.play(self)
+            self.update()
+        else:
+            row = int(button[0])
+            col = int(button[1])
+            self.game.play(self, col)
 
-# link the buttons to the function called press
-app.addButtons(["Submit", "Cancel"], press)
+    def update(self):
+        for row in range(self.game.num_rows):
+            for col in range(self.game.num_cols):
+                self.app.setButton(str(row) + str(col), self.game.board[row][col])
 
-app.setFocus("Username")
+    def init_window(self, game):
+        self.game = game
+        # create a GUI variable called app
+        self.app = gui("Connect Four", "600x550")
+        #app.setBg("orange")
 
-# start the GUI
-app.go()
+        # grid layout
+        self.app.setSticky("news")
+        self.app.setExpand("both")
+        self.app.setFont(20)
+
+        for row in range(self.game.num_rows):
+            for col in range(self.game.num_cols):
+                self.app.addNamedButton(" ", str(row) + str(col), self.press, row, col)
+
+        # link the buttons to the function called press
+        self.app.addButtons([RESTART_BUTTON, EXIT_BUTTON], self.press, row=self.game.num_rows+1, colspan=self.game.num_cols)
+
+        # start the GUI
+        self.app.go()
+        # program will not reach the following line unless the windows closes
+
+if __name__ == "__main__":
+    from connect_four import *
+    connect4 = play_connect4_gui()
+
