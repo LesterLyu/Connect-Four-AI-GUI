@@ -1,10 +1,11 @@
 # CSC384 Project
 # TODO
 
-- try to win the AI with difficult=3
+- try to win the AI with difficult=4
 - if you won, try to fix the bug in heuristic function
-- alpha-beta prune
-- implement AI vs AI
+- Fix alpha-beta prune
+- implement GUI
+
 # HOW TO USE
 ### two player mode
 ```
