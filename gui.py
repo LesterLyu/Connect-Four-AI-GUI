@@ -20,11 +20,15 @@ class GUI:
             # play the first move
             t2 = Thread(target=self.game.play, args=(self,))
             t2.start()
-            self.app.setButton(START_BUTTON, RESTART_BUTTON)
+            self.app.openFrame("f2")
+            self.app.removeWidget(gui.BUTTON, START_BUTTON)
+            self.app.addButton(RESTART_BUTTON, self.press, row=0, column=0)
+            self.app.stopFrame()
+
         elif button == RESTART_BUTTON:
             thread = Thread(target=self.reset, args=())
             thread.start()
-        else:
+        elif self.game.num_empty != self.game.num_cols * self.game.num_rows:
             col = int(button[1])
             thread = Thread(target=self.game.play, args=(self, col,))
             thread.start()
@@ -43,7 +47,18 @@ class GUI:
         # create a GUI variable called app
         self.app = gui("Connect Four", "600x550")
         #app.setBg("orange")
+        self.app.setExpand("both")
+        self.app.setPadding([10, 10])
 
+        self.app.startFrame("f0")
+        self.app.setSticky("")
+        self.app.addRadioButton("diff", "Easy", 0, 1)
+        self.app.addRadioButton("diff", "Normal", 0, 2)
+        self.app.addRadioButton("diff", "Hard", 0, 3)
+        self.app.addButton("Set", self.press, 0, 4)
+        self.app.stopFrame()
+
+        self.app.startFrame("f1")
         # grid layout
         self.app.setSticky("news")
         self.app.setExpand("both")
@@ -53,8 +68,16 @@ class GUI:
             for col in range(self.game.num_cols):
                 self.app.addNamedButton(" ", str(row) + str(col), self.press, row, col)
 
+        self.app.stopFrame()
+
+        self.app.startFrame("f2")
+        self.app.setSticky("")
         # link the buttons to the function called press
-        self.app.addButtons([START_BUTTON, EXIT_BUTTON], self.press, row=self.game.num_rows+1, colspan=self.game.num_cols)
+        self.app.addButton(START_BUTTON, self.press, row=0, column=0)
+        #self.app.addButton(RESTART_BUTTON, self.press, row=0, column=1)
+        self.app.addButton(EXIT_BUTTON, self.press, row=0, column=1)
+        self.app.stopFrame()
+
         # start the GUI
         self.app.go()
         # program will not reach the following line unless the windows closes
