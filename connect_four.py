@@ -329,17 +329,9 @@ def play_connect4():
 def play_connect4_gui():
     game = ConnectFour(mode=3, p1="player name", difficulty=4)
     window = GUI(game)
-
     # init_window
-    t1 = Thread(target=window.init_window, args=())
-    # play the first move
-    t2 = Thread(target=game.play, args=(window,))
+    window.init_window()
 
-    t1.start()
-    print("t1 started")
-    t2.start()
-
-    t1.join()
     print("thread finished...exiting")
 
 
