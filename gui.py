@@ -7,10 +7,13 @@ RESTART_BUTTON = "Restart"
 START_BUTTON = "Start"
 
 
+
+
 class GUI:
     def __init__(self, game):
         self.app = None
         self.game = game
+        self.waiting = 0
 
     # handle button events
     def press(self, button):
@@ -28,7 +31,7 @@ class GUI:
         elif button == RESTART_BUTTON:
             thread = Thread(target=self.reset, args=())
             thread.start()
-        elif self.game.num_empty != self.game.num_cols * self.game.num_rows:
+        elif self.game.num_empty != self.game.num_cols * self.game.num_rows and self.waiting == 0:
             col = int(button[1])
             thread = Thread(target=self.game.play, args=(self, col,))
             thread.start()

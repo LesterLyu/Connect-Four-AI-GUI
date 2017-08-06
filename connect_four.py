@@ -248,6 +248,7 @@ class ConnectFour:
 
     def single_player_gui(self, window=None, move=-1):
         # First time
+        window.waiting = 1
         if move == -1:
             print("It is " + self.p2 + "'s turn")
             col = find_next_move(self, self.p2, self.difficulty)
@@ -264,16 +265,18 @@ class ConnectFour:
             self.print_game_status()
             window.update()
 
-        check = self.winning_check()
-        if check == Constants.TOKEN_1:
-            print(self.p1 + " win")
-            return self.p1
-        elif check == Constants.TOKEN_2:
-            print(self.p2 + " win")
-            return self.p2
-        elif check == "3":
-            print("It's a tie")
-            return 0
+        # check = self.winning_check()
+        # if check == Constants.TOKEN_1:
+        #     print(self.p1 + " win")
+        #     return self.p1
+        # elif check == Constants.TOKEN_2:
+        #     print(self.p2 + " win")
+        #     return self.p2
+        # elif check == "3":
+        #     print("It's a tie")
+        #     return 0
+        window.waiting = 0
+
 
 
 def play_connect4():
