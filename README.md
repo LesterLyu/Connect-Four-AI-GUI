@@ -1,10 +1,24 @@
 # CSC384 Project
 # TODO
+## Back-end / Algorithm
+ - [ ] Fix alpha-beta prune
+ 
+## GUI
+ - [ ] Add finish game dialog
+ - [ ] Prevent user click when computer is thinking
+ - [ ] Finish implement difficulty
+ - [ ] Change "X" and "O" to images
+ 
+  ### Hint
+  - GUI must run on the main thread, back-end operations must run on other threads other than the main thread.
+  - Once the windows shows, the code after display the windows will be blocked forever until the window closes
 
-- try to win the AI with difficult=4
-- if you won, try to fix the bug in heuristic function
-- Fix alpha-beta prune
-- implement GUI
+
+## Others
+ - [ ] try to win the AI with difficult=4; if you won, try to fix the bug in heuristic function, and copy how you won.
+ - [ ] Add run.sh script that make sure TA will be able to run the game with python3.5
+
+
 
 # HOW TO USE
 ### two player mode
