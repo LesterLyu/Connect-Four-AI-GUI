@@ -29,6 +29,12 @@ class ConnectFour:
         self.difficulty = difficulty
         self.num_empty = None
         self.board = board
+
+        self.first_round_gui = 0
+
+        self.order = [p1, p2]
+        self.is_running = 0
+
         if not board:
             self.reset()
         if mode == 0:
@@ -57,6 +63,8 @@ class ConnectFour:
         """
         self.board = [[Constants.EMPTY_SLOT] * self.num_cols for i in range(self.num_rows)]
         self.num_empty = self.num_cols * self.num_rows
+        self.is_running = 1
+        self.first_round_gui = 1
 
     def get_copy(self):
         return copy.deepcopy(self)
@@ -68,7 +76,7 @@ class ConnectFour:
             token = Constants.TOKEN_2
         else:
             raise Exception("No other player exception")
-
+        print(move)
         if move < 0 or move > self.num_cols:
             raise Exception("Error column chosen")
 
@@ -166,7 +174,7 @@ class ConnectFour:
         # player_lst = self.random_start()
         count = 0
         while True:
-            for player in [self.p2, self.p1]:
+            for player in self.order:
             # for player in player_lst:
                 if player == self.p1:
                     print("It is " + player + "'s turn")
@@ -197,7 +205,7 @@ class ConnectFour:
 
     def dual_play(self):
         while True:
-            for player in [self.p1, self.p2]:
+            for player in self.order:
                 print("It is " + player +"'s turn")
                 self.print_game_status()
                 col = self._get_input()
@@ -207,17 +215,20 @@ class ConnectFour:
                     self.print_game_status()
                 if check == Constants.TOKEN_1:
                     print(self.p1 + " win")
+                    self.is_running = 0
                     return 0
                 elif check == Constants.TOKEN_2:
                     print(self.p2 + " win")
+                    self.is_running = 0
                     return 0
                 elif check == "3":
                     print("It's a tie")
+                    self.is_running = 0
                     return 0
 
     def dual_ai(self):
         while True:
-            for player in [self.p1, self.p2]:
+            for player in self.order:
                 print("It is " + player + "'s turn")
                 self.print_game_status()
                 col = find_next_move(self, player, self.difficulty)
@@ -249,38 +260,53 @@ class ConnectFour:
     def single_player_gui(self, window=None, move=-1):
         # First time
         window.waiting = 1
+
+
         if move == -1:
             print("It is " + self.p2 + "'s turn")
             col = find_next_move(self, self.p2, self.difficulty)
             self.next_move(self.p2, col)
             self.print_game_status()
             window.update()
+            if self.check_game_over_gui(window) != "continue":
+                return 0
         else:
-            self.next_move(self.p1, move)
-            self.print_game_status()
-            window.update()
+            if self.order == [self.p2, self.p1]:
+                self.next_move(self.p1, move)
+                self.print_game_status()
+                window.update()
+                if self.check_game_over_gui(window) != "continue":
+                    return 0
+                col = find_next_move(self, self.p2, self.difficulty)
+                self.next_move(self.p2, col)
+                self.print_game_status()
+                window.update()
+                if self.check_game_over_gui(window) != "continue":
+                    return 0
 
-            col = find_next_move(self, self.p2, self.difficulty)
-            self.next_move(self.p2, col)
-            self.print_game_status()
-            window.update()
 
+
+
+        window.waiting = 0
+
+    def check_game_over_gui(self, window):
         check = self.winning_check()
         if check == Constants.TOKEN_1:
             print(self.p1 + " win")
-            window.app.infoBox("Game Over", "You win!" )
+            self.is_running = 0
+            window.app.infoBox("Game Over", "You win!")
             return self.p1
         elif check == Constants.TOKEN_2:
             print(self.p2 + " win")
-            window.app.infoBox("Game Over", "You Lose!" )
+            self.is_running = 0
+            window.app.infoBox("Game Over", "You Lose!")
             return self.p2
         elif check == "3":
             print("It's a tie")
-            window.app.infoBox("Game Over", "It's a tie!" )
-            return 0
-        window.waiting = 0
-
-
+            self.is_running = 0
+            window.app.infoBox("Game Over", "It's a tie!")
+            return "tie"
+        return "continue"
 
 def play_connect4():
     game = None

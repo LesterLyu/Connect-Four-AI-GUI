@@ -6,6 +6,9 @@ EXIT_BUTTON = "Exit"
 RESTART_BUTTON = "Restart"
 START_BUTTON = "Start"
 
+SET_DIFFICULTY_BUTTON = "Set Difficulty"
+SET_WHO_FIRST_BUTTON = "Set who first"
+
 
 
 
@@ -31,7 +34,20 @@ class GUI:
         elif button == RESTART_BUTTON:
             thread = Thread(target=self.reset, args=())
             thread.start()
-        elif self.game.num_empty != self.game.num_cols * self.game.num_rows and self.waiting == 0:
+        elif button == SET_DIFFICULTY_BUTTON and self.game.is_running == 0:
+            if self.app.getRadioButton == "Easy":
+                self.game.difficulty = 1
+            if self.app.getRadioButton == "Normal":
+                self.game.difficulty = 2
+            if self.app.getRadioButton == "Hard":
+                self.game.difficulty = 4
+
+        elif button == SET_WHO_FIRST_BUTTON and self.game.is_running == 0:
+            if self.app.getRadioButton == "You First":
+                self.order = [self.game.p1, self.game.p2]
+            elif self.app.getRadioButton == "AI First":
+                self.order = [self.game.p2, self.game.p1]
+        elif self.game.num_empty != self.game.num_cols * self.game.num_rows and self.waiting == 0 and self.game.is_running == 1:
             col = int(button[1])
             thread = Thread(target=self.game.play, args=(self, col,))
             thread.start()
@@ -49,7 +65,7 @@ class GUI:
 
     def init_window(self):
         # create a GUI variable called app
-        self.app = gui("Connect Four", "600x550")
+        self.app = gui("Connect Four", "800x550")
         #app.setBg("orange")
         self.app.setExpand("both")
         self.app.setPadding([10, 10])
@@ -59,7 +75,10 @@ class GUI:
         self.app.addRadioButton("diff", "Easy", 0, 1)
         self.app.addRadioButton("diff", "Normal", 0, 2)
         self.app.addRadioButton("diff", "Hard", 0, 3)
-        self.app.addButton("Set", self.press, 0, 4)
+        self.app.addRadioButton("who first", "You First", 1, 1)
+        self.app.addRadioButton("who first", "AI First", 1, 2)
+        self.app.addButton("Set Difficulty", self.press, 0, 4)
+        self.app.addButton("Set who first", self.press, 1, 4)
         self.app.stopFrame()
 
         self.app.startFrame("f1")
