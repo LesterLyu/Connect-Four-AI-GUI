@@ -4,6 +4,8 @@ class Constants:
     TOKEN_2 = "O"
     NUM_COLS = 7
     NUM_ROWS = 6
+    ALPHA = float("-inf")
+    BETA = float("inf")
 
     # default name
     COMPUTER_NAME = "computer"
@@ -17,3 +19,4 @@ class Constants:
     HARD = 20
     NORMAL = 10
     EASY = 6
+

@@ -3,8 +3,6 @@ import random
 from connect_four import *
 from constants import Constants
 
-ALPHA = float("-inf")
-BETA = float("inf")
 
 class GameNode(object):
     def __init__(self, game, player):
@@ -123,6 +121,7 @@ def minimax(node, depth, curr_player, max_player):
     # find the best move
     move_list = []
     best_move_list = []
+    #print(move_list)
     for child, move in children:
         move_list.append(move)
         if child.val == best_value:
@@ -134,10 +133,11 @@ def minimax(node, depth, curr_player, max_player):
     else:
         node.best_move = random.choice(best_move_list)
     #print("best_val=", best_value)
+    print(len(move_list))
     return best_value
 
 
-def ab_pruning(node, depth, curr_player, max_player, alpha=ALPHA, beta=BETA):
+def ab_pruning(node, depth, curr_player, max_player, alpha=Constants.ALPHA, beta=Constants.BETA):
     next_player = node.game.p1 if curr_player == node.game.p2 else node.game.p2
     if depth == 0 or node.game.winning_check() != "4":  # is terminal
         return heuristic(node.game, max_player, next_player, depth)
@@ -182,13 +182,31 @@ def ab_pruning(node, depth, curr_player, max_player, alpha=ALPHA, beta=BETA):
         node.best_move = best_move_list[0]
     else:
         node.best_move = random.choice(best_move_list)
-    print("best_move=", node.best_move)
+    print(len(move_list))
+    #print("best_move=", node.best_move)
     return best_value
 
 
 def find_next_move(game, max_player, depth):
     node = GameNode(game, max_player)
-    val = minimax(node, depth, max_player, max_player)
-    #val = ab_pruning(node,depth,max_player,max_player)
-    #print("best_val=", val)
+    #val = minimax(node, depth, max_player, max_player)
+    val = ab_pruning(node,depth,max_player,max_player)
+    print("best_val=", val)
     return node.best_move
+
+if __name__ == "__main__":
+    board1 = [[' ', ' ', ' ', ' ', 'O', ' ', ' '],
+              [' ', 'O', ' ', ' ', 'O', ' ', ' '],
+              [' ', 'X', 'X', 'O', 'X', ' ', ' '],
+              ['X', 'O', 'X', 'X', 'O', ' ', ' '],
+              ['O', 'X', 'O', 'O', 'X', 'X', 'X'],
+              ['O', 'O', 'X', 'X', 'O', 'O', 'O']]
+
+    game = ConnectFour(0, "Jerry", "Lester", board=board1)
+    game.num_empty = 30  # input any number you want!
+    node = GameNode(game, "Jerry")
+    #val = minimax(node, 5, "Lester", "Lester")
+    #print(val)
+    val2 =  ab_pruning(node, 5, "Jerry", "Jerry")
+    print(val2)
+
