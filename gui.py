@@ -13,7 +13,7 @@ class GUI:
     def __init__(self, game):
         self.app = None
         self.game = game
-        self.waiting = 0
+        self.waiting = 1
 
     # handle button events
     def press(self, button):
@@ -37,6 +37,7 @@ class GUI:
             thread.start()
 
     def reset(self):
+        self.waiting = 0
         self.game.reset()
         self.game.play(self)
         self.update()

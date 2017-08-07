@@ -265,16 +265,19 @@ class ConnectFour:
             self.print_game_status()
             window.update()
 
-        # check = self.winning_check()
-        # if check == Constants.TOKEN_1:
-        #     print(self.p1 + " win")
-        #     return self.p1
-        # elif check == Constants.TOKEN_2:
-        #     print(self.p2 + " win")
-        #     return self.p2
-        # elif check == "3":
-        #     print("It's a tie")
-        #     return 0
+        check = self.winning_check()
+        if check == Constants.TOKEN_1:
+            print(self.p1 + " win")
+            window.app.infoBox("Game Over", "You win!" )
+            return self.p1
+        elif check == Constants.TOKEN_2:
+            print(self.p2 + " win")
+            window.app.infoBox("Game Over", "You Lose!" )
+            return self.p2
+        elif check == "3":
+            print("It's a tie")
+            window.app.infoBox("Game Over", "It's a tie!" )
+            return 0
         window.waiting = 0
 
 
