@@ -188,6 +188,28 @@ class TestGame(unittest.TestCase):
             move = find_next_move(game1, Constants.COMPUTER_NAME, 4)
             self.assertEqual(move, 2)
 
+    def test_ab_prunning(self):
+        board1 = [[' ', ' ', ' ', ' ', 'O', ' ', ' '],
+                  [' ', 'O', ' ', ' ', 'O', ' ', ' '],
+                  [' ', 'X', 'X', 'O', 'X', ' ', ' '],
+                  ['X', 'O', 'X', 'X', 'O', ' ', ' '],
+                  ['O', 'X', 'O', 'O', 'X', 'X', 'X'],
+                  ['O', 'O', 'X', 'X', 'O', 'O', 'O']]
+        game = ConnectFour(0, "Jerry", "Lester", board=board1)
+        game.num_empty = 30  # input any number you want!
+        node = GameNode(game, "Jerry")
+
+        start_time = os.times()[0]
+        val = minimax(node, 5, "Lester", "Lester")
+        time = os.times()[0] - start_time
+
+        start_time2 = os.times()[0]
+        val2 = ab_pruning(node, 5, "Lester", "Lester")
+        time2 = os.times()[0] - start_time2
+
+        result = time > time2
+        self.assertEqual(True, result)
+
 if (__name__ == "__main__"):
     runner = unittest.TextTestRunner(verbosity=1)
     unittest.main(testRunner=runner, exit=False)

@@ -2,6 +2,7 @@ import random
 
 from connect_four import *
 from constants import Constants
+import os
 
 
 class GameNode(object):
@@ -118,6 +119,7 @@ def minimax(node, depth, curr_player, max_player):
             if best_value > child.val:
                 best_value = child.val
 
+
     # find the best move
     move_list = []
     best_move_list = []
@@ -133,7 +135,7 @@ def minimax(node, depth, curr_player, max_player):
     else:
         node.best_move = random.choice(best_move_list)
     #print("best_val=", best_value)
-    print(len(move_list))
+    #print(len(move_list))
     return best_value
 
 
@@ -152,9 +154,11 @@ def ab_pruning(node, depth, curr_player, max_player, alpha=Constants.ALPHA, beta
             new_children.append((child, move))
             child.val = ab_pruning(child, depth - 1, next_player, max_player, alpha, beta)
             best_value = max(best_value, child.val)
-            print("max_player, best val=", best_value, "move =", move)
+            #print("max_player, best val=", best_value, "move =", move)
             alpha = max(best_value, alpha)
+            #print (alpha)
             if beta <= alpha:
+                #print("break here")
                 break
     # minimizing player
     else:
@@ -163,7 +167,7 @@ def ab_pruning(node, depth, curr_player, max_player, alpha=Constants.ALPHA, beta
             new_children.append((child, move))
             child.val = ab_pruning(child, depth - 1, next_player, max_player, alpha, beta)
             best_value = min(best_value, child.val)
-            print("min_player, best val=", best_value, "move =", move)
+            #print("min_player, best val=", best_value, "move =", move)
             beta = min(best_value, beta)
             if beta <= alpha:
                 break
@@ -182,7 +186,7 @@ def ab_pruning(node, depth, curr_player, max_player, alpha=Constants.ALPHA, beta
         node.best_move = best_move_list[0]
     else:
         node.best_move = random.choice(best_move_list)
-    print(len(move_list))
+    #print(len(move_list))
     #print("best_move=", node.best_move)
     return best_value
 
@@ -191,22 +195,31 @@ def find_next_move(game, max_player, depth):
     node = GameNode(game, max_player)
     #val = minimax(node, depth, max_player, max_player)
     val = ab_pruning(node,depth,max_player,max_player)
-    print("best_val=", val)
+    #print("best_val=", val)
     return node.best_move
 
-if __name__ == "__main__":
-    board1 = [[' ', ' ', ' ', ' ', 'O', ' ', ' '],
-              [' ', 'O', ' ', ' ', 'O', ' ', ' '],
-              [' ', 'X', 'X', 'O', 'X', ' ', ' '],
-              ['X', 'O', 'X', 'X', 'O', ' ', ' '],
-              ['O', 'X', 'O', 'O', 'X', 'X', 'X'],
-              ['O', 'O', 'X', 'X', 'O', 'O', 'O']]
-
-    game = ConnectFour(0, "Jerry", "Lester", board=board1)
-    game.num_empty = 30  # input any number you want!
-    node = GameNode(game, "Jerry")
-    #val = minimax(node, 5, "Lester", "Lester")
-    #print(val)
-    val2 =  ab_pruning(node, 5, "Jerry", "Jerry")
-    print(val2)
+# if __name__ == "__main__":
+#     board1 = [[' ', ' ', ' ', ' ', 'O', ' ', ' '],
+#               [' ', 'O', ' ', ' ', 'O', ' ', ' '],
+#               [' ', 'X', 'X', 'O', 'X', ' ', ' '],
+#               ['X', 'O', 'X', 'X', 'O', ' ', ' '],
+#               ['O', 'X', 'O', 'O', 'X', 'X', 'X'],
+#               ['O', 'O', 'X', 'X', 'O', 'O', 'O']]
+#
+#     game = ConnectFour(0, "Jerry", "Lester", board=board1)
+#     game.num_empty = 30  # input any number you want!
+#     node = GameNode(game, "Jerry")
+#
+#     start_time = os.times()[0]
+#     val = minimax(node, 5, "Lester", "Lester")
+#     time = os.times()[0] - start_time
+#     print("minimax:=", time, "sec")
+#     print(val)
+#
+#     #val2 =  ab_pruning(node, 5, "Jerry", "Jerry")
+#     start_time2 = os.times()[0]
+#     val2 = ab_pruning(node, 5, "Lester", "Lester")
+#     time2 = os.times()[0] - start_time2
+#     print("ab_prunning:=", time2, "sec")
+#     print(val2)
 
