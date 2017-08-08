@@ -63,7 +63,6 @@ class ConnectFour:
         """
         self.board = [[Constants.EMPTY_SLOT] * self.num_cols for i in range(self.num_rows)]
         self.num_empty = self.num_cols * self.num_rows
-        self.is_running = 1
         self.first_round_gui = 1
 
     def get_copy(self):
@@ -76,11 +75,11 @@ class ConnectFour:
             token = Constants.TOKEN_2
         else:
             raise Exception("No other player exception")
-        print(move)
+        # print(move)
         if move < 0 or move > self.num_cols:
             raise Exception("Error column chosen")
 
-        if self.board[0][move] != Constants.EMPTY_SLOT:
+        if self.check_column_full(move):
             raise Exception("column full")
 
         pos = -1
@@ -90,6 +89,9 @@ class ConnectFour:
             pos += 1
         self.board[pos][move] = token
         self.num_empty -= 1
+
+    def check_column_full(self, move):
+        return self.board[0][move] != Constants.EMPTY_SLOT
 
     def winning_check(self):
         if self.num_empty == 0:
@@ -261,8 +263,9 @@ class ConnectFour:
         # First time
         window.waiting = 1
 
-
-        if move == -1:
+        print(window.game.order)
+        print([window.game.p2, window.game.p1])
+        if move == -1 and window.game.order == [window.game.p2, window.game.p1]:
             print("It is " + self.p2 + "'s turn")
             col = find_next_move(self, self.p2, self.difficulty)
             self.next_move(self.p2, col)
@@ -270,24 +273,25 @@ class ConnectFour:
             window.update()
             if self.check_game_over_gui(window) != "continue":
                 return 0
+        elif move == -2 and window.game.order == [window.game.p1, window.game.p2]:
+            self.print_game_status()
+            window.update()
+        elif self.check_column_full(move):
+            window.app.infoBox("Error", "Column Full!")
         else:
-            if self.order == [self.p2, self.p1]:
-                self.next_move(self.p1, move)
-                self.print_game_status()
-                window.update()
-                if self.check_game_over_gui(window) != "continue":
-                    return 0
-                col = find_next_move(self, self.p2, self.difficulty)
-                self.next_move(self.p2, col)
-                self.print_game_status()
-                window.update()
-                if self.check_game_over_gui(window) != "continue":
-                    return 0
-
-
-
-
+            self.next_move(self.p1, move)
+            self.print_game_status()
+            window.update()
+            if self.check_game_over_gui(window) != "continue":
+                return 0
+            col = find_next_move(self, self.p2, self.difficulty)
+            self.next_move(self.p2, col)
+            self.print_game_status()
+            window.update()
+            if self.check_game_over_gui(window) != "continue":
+                return 0
         window.waiting = 0
+        return 0
 
     def check_game_over_gui(self, window):
         check = self.winning_check()
@@ -315,6 +319,7 @@ def play_connect4():
     player1 = None
     player2 = None
     difficulty = None
+    order = None
 
     print("Welcome to Connect4")
     print ("Please select a game mode:")
@@ -324,8 +329,9 @@ def play_connect4():
             mode = 1
             while player1 == None:
                 player1 = str(input("Enter player's name:"))
+                player2 = "Computer"
             while difficulty == None:
-                difficulty = int(input("Enter game difficulty 1 or 2 or 3 or 4:"))
+                difficulty = int(input("Enter game difficulty 1 or 2 or 3:"))
             game = ConnectFour(mode, player1, difficulty=difficulty)
 
         elif game_type.lower() == "double":
@@ -338,11 +344,23 @@ def play_connect4():
 
         elif game_type.lower() == "ai":
             mode = 2
+            player1 = "SIRI"
+            player2 = "CORTANA"
             while difficulty == None:
                 difficulty = int(input("Enter game difficulty 1 or 2 or 3:"))
             game = ConnectFour(mode, difficulty=difficulty)
         else:
             game_type = None
+
+    while not order:
+        order_str = str(input("Which player first? ({} or {})?".format(player1, player2)))
+        if order_str == player1:
+            order = True
+            game.order = [game.p1, game.p2]
+        elif order_str == player2:
+            order = True
+            game.order = [game.p2, game.p1]
+
 
     print("Game initialized, good luck!")
     game.play()
