@@ -11,20 +11,18 @@ START_BUTTON = "Start"
 START_BUTTON2 = "Start2"
 
 
-
-
-
 class GUI:
     def __init__(self, game):
         self.app = None
         self.game = game
-        self.waiting = 1
+        self.waiting = 0
 
     # handle button events
     def press(self, button):
         if button == EXIT_BUTTON:
             self.app.stop()
-        elif button == START_BUTTON:
+        elif button == START_BUTTON and self.waiting == 0:
+
             self.game.reset()
             self.update()
 
@@ -53,6 +51,7 @@ class GUI:
                 first_round = -1
             t2 = Thread(target=self.game.play, args=(self, first_round))
             t2.start()
+
             self.app.setButton(START_BUTTON, RESTART_BUTTON)
 
 

@@ -16,7 +16,7 @@ class Constants:
 
     # difficulty
     MAX_DIFFICULTY = -1
-    HARD = 6
+    HARD = 5
     NORMAL = 4
     EASY = 2
 
