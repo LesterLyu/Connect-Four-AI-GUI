@@ -16,10 +16,11 @@ class GUI:
         self.app = None
         self.game = game
         self.waiting = 0
+        self.ai_vs_ai = 0
 
     # handle button events
     def press(self, button):
-        if button == EXIT_BUTTON:
+        if button == EXIT_BUTTON or button == EXIT_BUTTON2:
             self.app.stop()
         elif button == START_BUTTON and self.waiting == 0:
 
@@ -54,35 +55,19 @@ class GUI:
 
             self.app.setButton(START_BUTTON, RESTART_BUTTON)
 
+        elif button == START_BUTTON2 and self.waiting == 0:
+            print("AI vs AI")
+            self.game.reset()
+            self.update()
+            self.game.is_running = True
 
-
-        # elif button == SET_DIFFICULTY_BUTTON:
-        #     print("set difficulty")
-        #     self.game.is_running = 0
-        #     if self.app.getRadioButton("diff") == "Easy":
-        #         print("set easy")
-        #         self.game.difficulty = 1
-        #     if self.app.getRadioButton("diff") == "Normal":
-        #         print("set normal")
-        #         self.game.difficulty = 2
-        #     if self.app.getRadioButton("diff") == "Hard":
-        #         print("set hard")
-        #         self.game.difficulty = 4
-
-        # elif button == SET_WHO_FIRST_BUTTON:
-        #     print("set order")
-        #     self.game.is_running = 0
-            # if self.app.getRadioButton("who first") == "You First":
-            #     self.game.order = [self.game.p1, self.game.p2]
-            #     print(self.game.order)
-            # elif self.app.getRadioButton("who first") == "AI First":
-            #     self.game.order = [self.game.p2, self.game.p1]
-            #     print(self.game.order)
-        elif self.waiting == 0 and self.game.is_running == 1:
+        elif self.waiting == 0 and self.game.is_running == 1 and self.ai_vs_ai == 0 and button[-8:] != "AI vs AI":
+            print("pressed button is " + button[-8:] + " " + str(button[-8:] == "AI vs AI"))
             col = int(button[1])
             thread = Thread(target=self.game.play, args=(self, col,))
             thread.start()
         else:
+            print(str(button[-8:] == "AI vs AI"))
             print(self.game.is_running, self.waiting)
 
     def reset(self):
@@ -163,7 +148,7 @@ class GUI:
 
         for row in range(self.game.num_rows):
             for col in range(self.game.num_cols):
-                self.app.addNamedButton(" ", str(row) + str(col) + "2", self.press, row, col)
+                self.app.addNamedButton(" ", str(row) + str(col) + "AI vs AI", self.press, row, col)
 
         self.app.stopFrame()
 

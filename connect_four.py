@@ -9,7 +9,7 @@ class ConnectFour:
 
 
 
-    def __init__(self, mode, p1=Constants.PLAYER_1_NAME, p2=Constants.PLAYER_2_NAME, difficulty=Constants.EASY, num_rows=Constants.NUM_ROWS, num_cols=Constants.NUM_COLS, gui=False, board=None):
+    def __init__(self, mode, p1=Constants.PLAYER_1_NAME, p2=Constants.PLAYER_2_NAME, difficulty=Constants.EASY, difficulty2=Constants.EASY, num_rows=Constants.NUM_ROWS, num_cols=Constants.NUM_COLS, gui=False, board=None):
         """
         initialize a ConnectFour game.
 
@@ -27,6 +27,7 @@ class ConnectFour:
         self.num_cols = num_cols
         self.p1 = p1
         self.difficulty = difficulty
+        self.difficulty2 = difficulty2
         self.num_empty = None
         self.board = board
 
@@ -233,7 +234,10 @@ class ConnectFour:
             for player in self.order:
                 print("It is " + player + "'s turn")
                 self.print_game_status()
-                col = find_next_move(self, player, self.difficulty)
+                if player == self.p1:
+                    col = find_next_move(self, player, self.difficulty)
+                else:
+                    col = find_next_move(self, player, self.difficulty2)
                 self.next_move(player, col)
                 check = self.winning_check()
                 if check != "4":
@@ -319,6 +323,7 @@ def play_connect4():
     player1 = None
     player2 = None
     difficulty = None
+    difficulty2 = None
     order = None
 
     print("Welcome to Connect4")
@@ -347,8 +352,10 @@ def play_connect4():
             player1 = "SIRI"
             player2 = "CORTANA"
             while difficulty == None:
-                difficulty = int(input("Enter game difficulty 1 or 2 or 3:"))
-            game = ConnectFour(mode, difficulty=difficulty)
+                difficulty = int(input("Enter game difficulty 1 or 2 or 3 for AI1 {}:".format(player1)))
+            while difficulty2 == None:
+                difficulty2 = int(input("Enter game difficulty 1 or 2 or 3 for AI2 {}:".format(player2)))
+            game = ConnectFour(mode, difficulty=difficulty, difficulty2=difficulty2)
         else:
             game_type = None
 
