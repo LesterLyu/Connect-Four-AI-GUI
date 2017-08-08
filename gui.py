@@ -5,11 +5,11 @@ from constants import *
 
 
 EXIT_BUTTON = "Exit"
+EXIT_BUTTON2 = "Exit2"
 RESTART_BUTTON = "Restart"
 START_BUTTON = "Start"
+START_BUTTON2 = "Start2"
 
-SET_DIFFICULTY_BUTTON = "Set Difficulty"
-SET_WHO_FIRST_BUTTON = "Set who first"
 
 
 
@@ -70,9 +70,9 @@ class GUI:
         #         print("set hard")
         #         self.game.difficulty = 4
 
-        elif button == SET_WHO_FIRST_BUTTON:
-            print("set order")
-            self.game.is_running = 0
+        # elif button == SET_WHO_FIRST_BUTTON:
+        #     print("set order")
+        #     self.game.is_running = 0
             # if self.app.getRadioButton("who first") == "You First":
             #     self.game.order = [self.game.p1, self.game.p2]
             #     print(self.game.order)
@@ -101,6 +101,10 @@ class GUI:
         # create a GUI variable called app
         self.app = gui("Connect Four", "800x550")
         #app.setBg("orange")
+        self.app.startTabbedFrame("TabbedFrame")
+        self.app.startTab("Tab1")
+        self.app.addLabel("l1", "Player vs AI")
+
         self.app.setExpand("both")
         self.app.setPadding([10, 10])
 
@@ -134,6 +138,45 @@ class GUI:
         #self.app.addButton(RESTART_BUTTON, self.press, row=0, column=1)
         self.app.addButton(EXIT_BUTTON, self.press, row=0, column=1)
         self.app.stopFrame()
+        self.app.stopTab()
+
+        self.app.startTab("Tab2")
+        self.app.addLabel("l2", "AI vs AI")
+        self.app.setExpand("both")
+        self.app.setPadding([10, 10])
+
+        self.app.startFrame("f3")
+        self.app.setSticky("")
+        self.app.addLabel("AI1", "AI1")
+        self.app.addRadioButton("diff1", "Easy", 0, 1)
+        self.app.addRadioButton("diff1", "Normal", 0, 2)
+        self.app.addRadioButton("diff1", "Hard", 0, 3)
+        self.app.addLabel("AI2", "AI2")
+        self.app.addRadioButton("diff2", "Easy", 1, 1)
+        self.app.addRadioButton("diff2", "Normal", 1, 2)
+        self.app.addRadioButton("diff2", "Hard", 1, 3)
+        self.app.stopFrame()
+        self.app.startFrame("f4")
+        # grid layout
+        self.app.setStretch("both")
+        self.app.setSticky("news")
+        self.app.setFont(20)
+
+        for row in range(self.game.num_rows):
+            for col in range(self.game.num_cols):
+                self.app.addNamedButton(" ", str(row) + str(col) + "2", self.press, row, col)
+
+        self.app.stopFrame()
+
+        self.app.startFrame("f5")
+        self.app.setSticky("")
+        # link the buttons to the function called press
+        self.app.addNamedButton(START_BUTTON, START_BUTTON2, self.press, row=0, column=0)
+        # self.app.addButton(RESTART_BUTTON, self.press, row=0, column=1)
+        self.app.addNamedButton(EXIT_BUTTON, EXIT_BUTTON2, self.press, row=0, column=1)
+        self.app.stopFrame()
+        self.app.stopTab()
+        self.app.stopTabbedFrame()
 
         # start the GUI
         self.app.go()
