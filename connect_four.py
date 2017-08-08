@@ -287,12 +287,14 @@ class ConnectFour:
             self.print_game_status()
             window.update()
             if self.check_game_over_gui(window) != "continue":
+                window.waiting = 0
                 return 0
             col = find_next_move(self, self.p2, self.difficulty)
             self.next_move(self.p2, col)
             self.print_game_status()
             window.update()
             if self.check_game_over_gui(window) != "continue":
+                window.waiting = 0
                 return 0
         window.waiting = 0
         return 0
