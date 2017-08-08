@@ -3,6 +3,7 @@ from appJar import gui
 from threading import Thread
 from constants import *
 
+
 EXIT_BUTTON = "Exit"
 RESTART_BUTTON = "Restart"
 START_BUTTON = "Start"
