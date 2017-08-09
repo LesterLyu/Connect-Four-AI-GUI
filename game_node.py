@@ -195,10 +195,13 @@ def ab_pruning(node, depth, curr_player, max_player, alpha=Constants.ALPHA, beta
     return best_value
 
 
-def find_next_move(game, max_player, depth):
+def find_next_move(game, max_player, depth, mode = "ab_prune"):
     node = GameNode(game, max_player)
+    if mode == "ab_prune":
     #val = minimax(node, depth, max_player, max_player)
-    val = ab_pruning(node,depth,max_player,max_player)
+        val = ab_pruning(node,depth,max_player,max_player)
+    else:
+        val = minimax(node, depth, max_player, max_player)
     #print("best_val=", val)
     return node.best_move
 
