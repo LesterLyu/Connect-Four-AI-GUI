@@ -50,7 +50,7 @@ def heuristic(game, max_player, curr_player, depth):
             # max player will win for sure
             if max_has_num > 0 and next_player == max_player:
                 value += 200
-            # max player will win for sure
+            # min player will win for sure
             elif min_has_num > 0 and next_player == min_player:
                 value -= 200
             # max player may win
@@ -203,46 +203,46 @@ def find_next_move(game, max_player, depth):
     return node.best_move
 
 # if __name__ == "__main__":
-    # board1 = [[' ', ' ', ' ', ' ', ' ', ' ', ' '],
-    #           [' ', ' ', ' ', ' ', ' ', ' ', ' '],
-    #           [' ', ' ', ' ', ' ', ' ', ' ', ' '],
-    #           [' ', ' ', ' ', 'X', 'O', ' ', ' '],
-    #           ['O', ' ', 'O', 'X', 'X', 'X', ' '],
-    #           ['O', 'O', 'X', 'X', 'O', 'X', ' ']]
-    #
-    # game = ConnectFour(0, "Jerry", "Lester", board=board1)
-    # game.num_empty = 30  # input any number you want!
-    # node = GameNode(game, "Jerry")
-
-    # board1 = [[' ', ' ', ' ', ' ', ' ', ' ', ' '],
-    #           [' ', ' ', ' ', 'X', ' ', ' ', ' '],
-    #           [' ', ' ', ' ', 'O', ' ', ' ', ' '],
-    #           [' ', 'O', 'X', 'O', 'O', ' ', ' '],
-    #           [' ', 'X', 'X', 'O', 'X', ' ', ' '],
-    #           ['X', 'O', 'X', 'X', 'O', 'O', 'O']]
-    #
-    # game1 = ConnectFour(1, "Jerry", difficulty=1, board=board1)
-    # game1.num_empty = 30
-    # node1 = GameNode(game1, Constants.COMPUTER_NAME)
-    # node2 = GameNode(game1, Constants.COMPUTER_NAME)
-    #
-    # for i in range(1, 5):
-    #     print("==================depth{}======================".format(i))
-    #
-    #     start_time = os.times()[0]
-    #     val = minimax(node1, i, Constants.COMPUTER_NAME, Constants.COMPUTER_NAME)
-    #     time = os.times()[0] - start_time
-    #     print("minimax:=", time, "sec")
-    #     print("minimax for depth", i, "is", val)
-    #     print("minimax best move is: ", node1.best_move )
-    #
-    #     # val2 =  ab_pruning(node, 5, "Jerry", "Jerry")
-    #     start_time2 = os.times()[0]
-    #     val2 = ab_pruning(node2, i, Constants.COMPUTER_NAME, Constants.COMPUTER_NAME)
-    #     time2 = os.times()[0] - start_time2
-    #     print("ab_prunning:=", time2, "sec")
-    #     print("ab_prunning for depth", i, "is", val2)
-    #     print("ab_prunning best move is: ", node2.best_move)
-    #
-    #     print("==========================================")
+#     board1 = [[' ', ' ', ' ', ' ', ' ', ' ', ' '],
+#               [' ', ' ', ' ', ' ', ' ', ' ', ' '],
+#               [' ', ' ', ' ', ' ', ' ', ' ', ' '],
+#               [' ', ' ', ' ', 'X', 'O', ' ', ' '],
+#               ['O', ' ', 'O', 'X', 'X', 'X', ' '],
+#               ['O', 'O', 'X', 'X', 'O', 'X', ' ']]
+#
+#     game = ConnectFour(0, "Jerry", "Lester", board=board1)
+#     game.num_empty = 30  # input any number you want!
+#     node = GameNode(game, "Jerry")
+#
+#     board1 = [[' ', ' ', ' ', ' ', ' ', ' ', ' '],
+#               [' ', ' ', ' ', 'X', ' ', ' ', ' '],
+#               [' ', ' ', ' ', 'O', ' ', ' ', ' '],
+#               [' ', 'O', 'X', 'O', 'O', ' ', ' '],
+#               [' ', 'X', 'X', 'O', 'X', ' ', ' '],
+#               ['X', 'O', 'X', 'X', 'O', 'O', 'O']]
+#
+#     game1 = ConnectFour(1, "Jerry", difficulty=1, board=board1)
+#     game1.num_empty = 30
+#     node1 = GameNode(game1, Constants.COMPUTER_NAME)
+#     node2 = GameNode(game1, Constants.COMPUTER_NAME)
+#
+#     for i in range(1, 7):
+#         print("==================depth{}======================".format(i))
+#
+#         start_time = os.times()[0]
+#         val = minimax(node1, i, Constants.COMPUTER_NAME, Constants.COMPUTER_NAME)
+#         time = os.times()[0] - start_time
+#         print("minimax:=", time, "sec")
+#         print("minimax for depth", i, "is", val)
+#         print("minimax best move is: ", node1.best_move )
+#
+#         # val2 =  ab_pruning(node, 5, "Jerry", "Jerry")
+#         start_time2 = os.times()[0]
+#         val2 = ab_pruning(node2, i, Constants.COMPUTER_NAME, Constants.COMPUTER_NAME)
+#         time2 = os.times()[0] - start_time2
+#         print("ab_prunning:=", time2, "sec")
+#         print("ab_prunning for depth", i, "is", val2)
+#         print("ab_prunning best move is: ", node2.best_move)
+#
+#         print("==========================================")
 
