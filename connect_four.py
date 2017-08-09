@@ -31,6 +31,8 @@ class ConnectFour:
         self.num_empty = None
         self.board = board
 
+        self.curr_turn = self.p1 #for GUI only
+
         self.first_round_gui = 0
 
         self.order = [p1, p2]
@@ -51,6 +53,10 @@ class ConnectFour:
         elif mode == 3:
             self.play = self.single_player_gui
             self.p2 = Constants.COMPUTER_NAME
+        elif mode == 4:
+            self.play = self.dual_ai_gui
+            self.p1 = Constants.AI_1_NAME
+            self.p2 = Constants.AI_2_NAME
 
     def reset(self):
         """
@@ -69,7 +75,31 @@ class ConnectFour:
     def get_copy(self):
         return copy.deepcopy(self)
 
+    def change_mode(self, mode):
+        self.mode = mode
+        if mode == 0:
+            self.play = self.dual_play
+            self.p2 = p2
+        elif mode == 1:
+            self.play = self.single_player
+            self.p2 = Constants.COMPUTER_NAME
+        elif mode == 2:
+            self.play = self.dual_ai
+            self.p1 = Constants.AI_1_NAME
+            self.p2 = Constants.AI_2_NAME
+        elif mode == 3:
+            self.play = self.single_player_gui
+            self.p2 = Constants.COMPUTER_NAME
+        elif mode == 4:
+            self.play = self.dual_ai_gui
+            self.p1 = Constants.AI_1_NAME
+            self.p2 = Constants.AI_2_NAME
+
     def next_move(self, round, move):
+        # print(round, self.p1)
+        # print(round, self.p2)
+        # print("P1 " + self.p1 + " P2 " + self.p2)
+
         if round == self.p1:
             token = Constants.TOKEN_1
         elif round == self.p2:
@@ -276,6 +306,7 @@ class ConnectFour:
             self.print_game_status()
             window.update()
             if self.check_game_over_gui(window) != "continue":
+                window.waiting = 0
                 return 0
         elif move == -2 and window.game.order == [window.game.p1, window.game.p2]:
             self.print_game_status()
@@ -299,17 +330,54 @@ class ConnectFour:
         window.waiting = 0
         return 0
 
+    def dual_ai_gui(self, window, curr_player):
+        # print("dual_ai_gui is running......")
+        window.waiting = 1
+        if curr_player == self.p1:
+            # print("turn p1")
+            difficulty = self.difficulty
+        else:
+            # print("turn p2")
+            difficulty = self.difficulty2
+        # print(self.difficulty)
+        # print(self.difficulty2)
+        # print(curr_player, self.p1)
+        # print(curr_player, self.p2)
+        # print("difficulty is:", difficulty)
+        # print("num empty is:", self.num_empty)
+
+        col = find_next_move(self, curr_player, difficulty)
+        # print(curr_player)
+        self.next_move(curr_player, col)
+        # print("next move")
+        self.print_game_status()
+        # print("updating")
+        window.update()
+        if self.check_game_over_gui(window) != "continue":
+            window.waiting = 0
+            return 0
+        window.waiting = 0
+        return 0
+
+
+
     def check_game_over_gui(self, window):
         check = self.winning_check()
         if check == Constants.TOKEN_1:
             print(self.p1 + " win")
             self.is_running = 0
-            window.app.infoBox("Game Over", "You win!")
+            if self.mode == 3:
+                window.app.infoBox("Game Over", "You win!")
+            else:
+                window.app.infoBox("Game Over", "AI 1 win!")
             return self.p1
         elif check == Constants.TOKEN_2:
             print(self.p2 + " win")
             self.is_running = 0
-            window.app.infoBox("Game Over", "You Lose!")
+            if self.mode == 3:
+                window.app.infoBox("Game Over", "You Lose!")
+            else:
+                window.app.infoBox("Game Over", "AI 2 win!")
             return self.p2
         elif check == "3":
             print("It's a tie")
