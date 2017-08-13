@@ -7,8 +7,6 @@ import copy
 
 class ConnectFour:
 
-
-
     def __init__(self, mode, p1=Constants.PLAYER_1_NAME, p2=Constants.PLAYER_2_NAME, difficulty=Constants.EASY, difficulty2=Constants.EASY, num_rows=Constants.NUM_ROWS, num_cols=Constants.NUM_COLS, gui=False, board=None):
         """
         initialize a ConnectFour game.
@@ -30,11 +28,8 @@ class ConnectFour:
         self.difficulty2 = difficulty2
         self.num_empty = None
         self.board = board
-
         self.curr_turn = self.p1 #for GUI only
-
         self.first_round_gui = 0
-
         self.order = [p1, p2]
         self.is_running = 0
 
@@ -76,6 +71,10 @@ class ConnectFour:
         return copy.deepcopy(self)
 
     def change_mode(self, mode):
+        """
+        :param mode: int representation of game mode
+        :return: None
+        """
         self.mode = mode
         if mode == 0:
             self.play = self.dual_play
@@ -96,23 +95,24 @@ class ConnectFour:
             self.p2 = Constants.AI_2_NAME
 
     def next_move(self, round, move):
-        # print(round, self.p1)
-        # print(round, self.p2)
-        # print("P1 " + self.p1 + " P2 " + self.p2)
+        """
+        Set next move and update board
 
+        :param round: current player
+        :param move: int representation of col num
+        :return: None
+
+        """
         if round == self.p1:
             token = Constants.TOKEN_1
         elif round == self.p2:
             token = Constants.TOKEN_2
         else:
             raise Exception("No other player exception")
-        # print(move)
         if move < 0 or move > self.num_cols:
             raise Exception("Error column chosen")
-
         if self.check_column_full(move):
             raise Exception("column full")
-
         pos = -1
         while pos < self.num_rows - 1:
             if self.board[pos + 1][move] != Constants.EMPTY_SLOT:
@@ -125,18 +125,24 @@ class ConnectFour:
         return self.board[0][move] != Constants.EMPTY_SLOT
 
     def winning_check(self):
+        """
+        if tie: return 3
+        if game still valid: return 4
+        otherwise: return win player
+        """
         if self.num_empty == 0:
-            return "3" #tie
+            # tie
+            return "3"
         for token in [Constants.TOKEN_1, Constants.TOKEN_2]:
             for direction in ["vertical", "horizontal", "LD", "RD"]:
                 if self.line_check(token, direction):
                     return token
-        return "4" # incomplete
+        # game still valid
+        return "4"
 
     def _helper_check_valid(self, row, col):
         """
-        看看棋子的下方是否有空格
-
+        check if any empty slot under input slot
         :return: false if has space
         """
         for i in range(row+1, self.num_rows):
@@ -145,28 +151,25 @@ class ConnectFour:
 
 
     def line_check(self, token, direction, num=4):
+        # vertical
         if direction == "vertical":
             for i in range(0, self.num_rows):
                 for j in range(0, self.num_cols - 3):
                     test_str = self.board[i][j:j+4]
-                    #print(test_str, test_str.count(token), test_str.count(EMPTY_SLOT) )
                     if test_str.count(token) == num and test_str.count(Constants.EMPTY_SLOT) == 4 - num:
                         for index in range(len(test_str)):
                             if test_str[index] == Constants.EMPTY_SLOT and num != 4 and not self._helper_check_valid(i, j + index):
-                                #print("not valid")
                                 return False
-                       # print("valid")
                         return True
-
+        # horizontal
         if direction == "horizontal":
             for j in range(0, self.num_cols):
                 for i in range(0, self.num_rows - 3):
                     test_str = [self.board[k][j] for k in range(i, i+4)]
-                    #print(test_str, test_str.count(token) , test_str.count(EMPTY_SLOT))
                     if test_str.count(token) == num and test_str.count(Constants.EMPTY_SLOT) == 4 - num:
                         return True
-
-        if direction == "LD": # top right to bottom left
+        # top right to bottom left
+        if direction == "LD":
             for i in range(3, self.num_rows):
                 for j in range(3, self.num_cols):
                     test_str = [self.board[i - k][j - k] for k in range(4)]
@@ -175,8 +178,8 @@ class ConnectFour:
                             if test_str[index] == Constants.EMPTY_SLOT and num != 4 and not self._helper_check_valid(i - index, j - index):
                                 return False
                         return True
-
-        if direction == "RD": # top left to bottom right
+        # top left to bottom right
+        if direction == "RD":
             for i in range(3, self.num_rows):
                 for j in range(0, self.num_cols - 3):
                     test_str = [self.board[i - k][j + k] for k in range(4)]
@@ -188,6 +191,10 @@ class ConnectFour:
         return False
 
     def print_game_status(self):
+        """
+        print current game board in console
+        :return: None
+        """
         for i in range(self.num_rows):
             print("    ", end="")
             for j in range(self.num_cols):
@@ -199,30 +206,36 @@ class ConnectFour:
         print(num_str)
 
     def random_start(self):
+        """
+        randomize whoever start the game first
+        :return: player list
+        """
         player_lst = [self.p1, self.p2]
         random.shuffle(player_lst)
         return player_lst
 
     def single_player(self):
-        # player_lst = self.random_start()
+        """
+        Single player game mode
+        """
         count = 0
         while True:
             for player in self.order:
-            # for player in player_lst:
+                # player 1: Human
                 if player == self.p1:
                     print("It is " + player + "'s turn")
                     if count == 0:
                         self.print_game_status()
                     col = self._get_input()
                     self.next_move(player, col)
-
+                # player 2: AI
                 elif player == self.p2:
                     count += 1
                     print("It is " + player + "'s turn")
                     col = find_next_move(self, player, self.difficulty)
                     self.next_move(player, col)
                     self.print_game_status()
-
+                # Winning check
                 check = self.winning_check()
                 if check != "4":
                     self.print_game_status()
@@ -237,12 +250,18 @@ class ConnectFour:
                     return 0
 
     def dual_play(self):
+        """
+        Multi-player game mode
+        """
         while True:
             for player in self.order:
+                # player move
                 print("It is " + player +"'s turn")
                 self.print_game_status()
                 col = self._get_input()
                 self.next_move(player, col)
+
+                # winning check
                 check = self.winning_check()
                 if check != "4":
                     self.print_game_status()
@@ -260,6 +279,10 @@ class ConnectFour:
                     return 0
 
     def dual_ai(self):
+        """
+        AI VS AI
+        :return: 0
+        """
         while True:
             for player in self.order:
                 print("It is " + player + "'s turn")
@@ -283,6 +306,9 @@ class ConnectFour:
                     return 0
 
     def _get_input(self):
+        """
+        Get input from console
+        """
         while True:
             col = input("please select the column from 1 to " + str(self.num_cols) + ": ")
             if not col.isdigit() or int(col) <= 0 or int(col) > self.num_cols:
@@ -294,7 +320,11 @@ class ConnectFour:
         return int(col) - 1
 
     def single_player_gui(self, window=None, move=-1):
-        # First time
+        """
+        single player mode gui setup
+        :param window: gui window
+        :param move: int
+        """
         window.waiting = 1
 
         print(window.game.order)
@@ -331,27 +361,22 @@ class ConnectFour:
         return 0
 
     def dual_ai_gui(self, window, curr_player):
-        # print("dual_ai_gui is running......")
+        """
+        AI VS AI mode gui setup
+        :param window: gui window
+        :param curr_player: str representation of current player
+        """
         window.waiting = 1
+        # set difficulties
         if curr_player == self.p1:
-            # print("turn p1")
             difficulty = self.difficulty
         else:
-            # print("turn p2")
             difficulty = self.difficulty2
-        # print(self.difficulty)
-        # print(self.difficulty2)
-        # print(curr_player, self.p1)
-        # print(curr_player, self.p2)
-        # print("difficulty is:", difficulty)
-        # print("num empty is:", self.num_empty)
-
+        # find moves
         col = find_next_move(self, curr_player, difficulty)
-        # print(curr_player)
         self.next_move(curr_player, col)
-        # print("next move")
         self.print_game_status()
-        # print("updating")
+        # update gui window
         window.update()
         if self.check_game_over_gui(window) != "continue":
             window.waiting = 0
@@ -359,9 +384,12 @@ class ConnectFour:
         window.waiting = 0
         return 0
 
-
-
     def check_game_over_gui(self, window):
+        """
+        check whther game still valid
+        :param window: gui window
+        :return: str representing game status
+        """
         check = self.winning_check()
         if check == Constants.TOKEN_1:
             print(self.p1 + " win")
@@ -387,6 +415,9 @@ class ConnectFour:
         return "continue"
 
 def play_connect4():
+    """
+    play connect4 in console
+    """
     game = None
     game_type = None
     mode = None
@@ -416,7 +447,6 @@ def play_connect4():
             while player2 == None:
                 player2 = str(input("Enter player2's name:"))
             game = ConnectFour(mode, player1, player2)
-
         elif game_type.lower() == "ai":
             mode = 2
             player1 = "SIRI"
@@ -428,7 +458,6 @@ def play_connect4():
             game = ConnectFour(mode, difficulty=difficulty, difficulty2=difficulty2)
         else:
             game_type = None
-
     while not order:
         order_str = str(input("Which player first? ({} or {})?".format(player1, player2)))
         if order_str == player1:
@@ -437,8 +466,6 @@ def play_connect4():
         elif order_str == player2:
             order = True
             game.order = [game.p2, game.p1]
-
-
     print("Game initialized, good luck!")
     game.play()
     while True:
@@ -452,23 +479,18 @@ def play_connect4():
         else:
             print("I don't understand... ")
 
-
 def play_connect4_gui():
+    """
+    play connect4 via gui
+    :return:
+    """
     game = ConnectFour(mode=3, p1="player name", difficulty=4)
     window = GUI(game)
-    # init_window
     window.init_window()
-
     print("thread finished...exiting")
-
 
 
 if __name__ == "__main__":
     connect4 = play_connect4()
-    #connect4.play()
 
-
-
-    # connect_four2 = ConnectFour(1, "Jerry", difficulty=3)
-    # connect_four2.play()
 

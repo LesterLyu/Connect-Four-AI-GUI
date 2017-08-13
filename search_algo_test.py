@@ -4,6 +4,14 @@ from game_node import *
 import os
 
 def compare_algo(board1, maxplayer, start_depth=1, limited_depth=7):
+    '''
+    Compare Minimax Searching Algorithm with AlphaBeta Searching Algorithm
+    :param board1: game board
+    :param maxplayer: current maxplayer
+    :param start_depth: search depth
+    :param limited_depth: limited search depth
+    :return: None
+    '''
     game1 = ConnectFour(1, maxplayer, difficulty=1, board=board1)
     game1.num_empty = 30
     node1 = GameNode(game1, Constants.COMPUTER_NAME)
@@ -27,8 +35,8 @@ def compare_algo(board1, maxplayer, start_depth=1, limited_depth=7):
         print("ab_pruning for depth", i, "is", val2)
         print("ab_pruning best move is: ", node2.best_move)
         print("\n")
-        print("ab_pruning is {} faster than minimax".format(time1-time2))
 
+        print("ab_pruning is {} faster than minimax".format(time1-time2))
         print("==========================================")
 
 if __name__ == "__main__":

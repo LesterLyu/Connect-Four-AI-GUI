@@ -27,7 +27,6 @@ class GUI:
             self.update()
             self.game.change_mode(3)
             # play the first move
-            # self.game.is_running = True
 
             if self.app.getRadioButton("diff") == "Normal":
                 print("set normal")
@@ -104,16 +103,21 @@ class GUI:
             thread = Thread(target=self.game.play, args=(self, col,))
             thread.start()
         else:
-            # print(str(button[-8:] == "AI vs AI"))
             print(self.game.is_running, self.waiting)
 
     def reset(self):
+        """
+        reset game
+        """
         self.waiting = 0
         self.game.reset()
         self.game.play(self)
         self.update()
 
     def update(self):
+        """
+        Update game board
+        """
         for row in range(self.game.num_rows):
             for col in range(self.game.num_cols):
                 self.app.setButton(str(row) + str(col) + "Single", self.game.board[row][col])
@@ -124,14 +128,15 @@ class GUI:
     def init_window(self):
         # create a GUI variable called app
         self.app = gui("Connect Four", "800x550")
-        #app.setBg("orange")
         self.app.startTabbedFrame("TabbedFrame")
+
+        # First tab setup
         self.app.startTab("Player vs AI")
         self.app.addLabel("l1", "Player vs AI")
-
         self.app.setExpand("both")
         self.app.setPadding([10, 10])
 
+        #Frame 0: single player mode setups
         self.app.startFrame("f0")
         self.app.setSticky("")
         self.app.addRadioButton("diff", "Easy", 0, 1)
@@ -139,22 +144,19 @@ class GUI:
         self.app.addRadioButton("diff", "Hard", 0, 3)
         self.app.addRadioButton("who first", "You First", 1, 1)
         self.app.addRadioButton("who first", "AI First", 1, 2)
-        # self.app.addButton("Set Difficulty", self.press, 0, 4)
-        # self.app.addButton("Set who first", self.press, 1, 4)
         self.app.stopFrame()
 
+        # Frame 1: grid layout
         self.app.startFrame("f1")
-        # grid layout
         self.app.setStretch("both")
         self.app.setSticky("news")
         self.app.setFont(20)
-
         for row in range(self.game.num_rows):
             for col in range(self.game.num_cols):
                 self.app.addNamedButton(" ", str(row) + str(col) + "Single", self.press, row, col)
-
         self.app.stopFrame()
 
+        # Frame 2: function buttons
         self.app.startFrame("f2")
         self.app.setSticky("")
         # link the buttons to the function called press
@@ -162,13 +164,16 @@ class GUI:
         #self.app.addButton(RESTART_BUTTON, self.press, row=0, column=1)
         self.app.addButton(EXIT_BUTTON, self.press, row=0, column=1)
         self.app.stopFrame()
+
         self.app.stopTab()
 
+        # Second tab setup
         self.app.startTab("AI vs AI")
         self.app.addLabel("l2", "AI vs AI")
         self.app.setExpand("both")
         self.app.setPadding([10, 10])
 
+        # Frame 3: AI vs AI mode setups
         self.app.startFrame("f3")
         self.app.setSticky("")
         self.app.addLabel("AI1", "AI1")
@@ -180,27 +185,27 @@ class GUI:
         self.app.addRadioButton("diff2", "Normal", 1, 2)
         self.app.addRadioButton("diff2", "Hard", 1, 3)
         self.app.stopFrame()
+
+        # Frame 4: grid layour
         self.app.startFrame("f4")
-        # grid layout
         self.app.setStretch("both")
         self.app.setSticky("news")
         self.app.setFont(20)
-
         for row in range(self.game.num_rows):
             for col in range(self.game.num_cols):
                 self.app.addNamedButton(" ", str(row) + str(col) + "AI vs AI", self.press, row, col)
-
         self.app.stopFrame()
 
+        # Frame 5: function buttons
         self.app.startFrame("f5")
         self.app.setSticky("")
         # link the buttons to the function called press
         self.app.addNamedButton(START_BUTTON, START_BUTTON2, self.press, row=0, column=0)
         self.app.addNamedButton(NEXT_BUTTON, NEXT_BUTTON, self.press, row=0, column=1)
-
         # self.app.addButton(RESTART_BUTTON, self.press, row=0, column=1)
         self.app.addNamedButton(EXIT_BUTTON, EXIT_BUTTON2, self.press, row=0, column=2)
         self.app.stopFrame()
+
         self.app.stopTab()
         self.app.stopTabbedFrame()
 
