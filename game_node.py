@@ -194,7 +194,7 @@ def ab_pruning(node, depth, curr_player, max_player, alpha=Constants.ALPHA, beta
     return best_value
 
 
-def find_next_move(game, max_player, depth, mode = "ab_prune"):
+def find_next_move(game, max_player, depth, mode="ab_prune"):
     node = GameNode(game, max_player)
     if mode == "ab_prune":
         val = ab_pruning(node,depth,max_player,max_player)

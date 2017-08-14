@@ -37,7 +37,7 @@ def compare_algo(board1, maxplayer, start_depth=1, limited_depth=7):
         print("\n")
 
         print("ab_pruning is {} faster than minimax".format(time1-time2))
-        print("==========================================")
+        print("==============================================")
 
 if __name__ == "__main__":
     board1 = [[' ', ' ', ' ', ' ', ' ', ' ', ' '],
@@ -49,4 +49,3 @@ if __name__ == "__main__":
     maxplayer = "Jerry"
     start_depth = 1
     limited_depth = 7
-    compare_algo(board1, maxplayer, start_depth, limited_depth)

@@ -78,7 +78,7 @@ class ConnectFour:
         self.mode = mode
         if mode == 0:
             self.play = self.dual_play
-            self.p2 = p2
+            self.p2 = Constants.PLAYER_2_NAME
         elif mode == 1:
             self.play = self.single_player
             self.p2 = Constants.COMPUTER_NAME
@@ -413,6 +413,7 @@ class ConnectFour:
             window.app.infoBox("Game Over", "It's a tie!")
             return "tie"
         return "continue"
+
 
 def play_connect4():
     """
