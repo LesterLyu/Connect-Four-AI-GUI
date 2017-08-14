@@ -45,6 +45,7 @@ class ConnectFour:
             self.play = self.dual_ai
             self.p1 = Constants.AI_1_NAME
             self.p2 = Constants.AI_2_NAME
+            self.order = [self.p1, self.p2]
         elif mode == 3:
             self.play = self.single_player_gui
             self.p2 = Constants.COMPUTER_NAME
@@ -52,6 +53,7 @@ class ConnectFour:
             self.play = self.dual_ai_gui
             self.p1 = Constants.AI_1_NAME
             self.p2 = Constants.AI_2_NAME
+            self.order = [self.p1, self.p2]
 
     def reset(self):
         """
@@ -450,8 +452,8 @@ def play_connect4():
             game = ConnectFour(mode, player1, player2)
         elif game_type.lower() == "ai":
             mode = 2
-            player1 = "SIRI"
-            player2 = "CORTANA"
+            player1 = Constants.AI_1_NAME
+            player2 = Constants.AI_2_NAME
             while difficulty == None:
                 difficulty = int(input("Enter game difficulty 1 or 2 or 3 for AI1 {}:".format(player1)))
             while difficulty2 == None:
