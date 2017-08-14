@@ -9,7 +9,7 @@ if __name__ == "__main__":
         exit(1)
 
     difficulty = argv[1]  # a number from 1 to 6
-    enable_prune = True if argv[2] == "-p" else False  # is alpha-beta prune enabled
+    enable_prune = True if len(argv) == 3 and argv[2] == "-p" else False  # is alpha-beta prune enabled
 
     board1 = [[' ', ' ', ' ', ' ', ' ', ' ', ' '],
               [' ', ' ', ' ', 'X', ' ', ' ', ' '],
