@@ -127,7 +127,7 @@ class GUI:
 
     def init_window(self):
         # create a GUI variable called app
-        self.app = gui("Connect Four", "800x550")
+        self.app = gui("Connect Four", "800x700")
         self.app.startTabbedFrame("TabbedFrame")
 
         # First tab setup
