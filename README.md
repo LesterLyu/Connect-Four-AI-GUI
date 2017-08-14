@@ -1,6 +1,6 @@
 # CSC384 Project
 
-## How to use CDF / Ubuntu
+## How to run on CDF / Ubuntu
 ### Note:
  - we need python version >= 3.5
 ### run GUI version of Connect Four
