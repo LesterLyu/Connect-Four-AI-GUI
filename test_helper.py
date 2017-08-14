@@ -21,9 +21,9 @@ if __name__ == "__main__":
     game1.num_empty = 30  # input any number you want!
     start_time2 = os.times()[0]
     if enable_prune:
-        find_next_move(game1, Constants.COMPUTER_NAME, 1)
+        find_next_move(game1, Constants.COMPUTER_NAME, difficulty)
     else:
-        find_next_move(game1, Constants.COMPUTER_NAME, 1, mode="")
+        find_next_move(game1, Constants.COMPUTER_NAME, difficulty, mode="")
     time2 = os.times()[0] - start_time2
     print("takes", time2, "sec to find best move.")
 
