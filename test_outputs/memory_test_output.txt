@@ -1,0 +1,50 @@
+ 
+b2240-02:~/384/Project/CSC384Project$ ./memory_test.sh 
+difficulty = 1 enable_prune=False
+takes 0.009999999999999995 sec to find best move.
+Memory used: 18256 bytes
+===================================
+difficulty = 1 enable_prune=True
+takes 0.0 sec to find best move.
+Memory used: 18168 bytes
+===================================
+difficulty = 2 enable_prune=False
+takes 0.03 sec to find best move.
+Memory used: 18160 bytes
+===================================
+difficulty = 2 enable_prune=True
+takes 0.020000000000000004 sec to find best move.
+Memory used: 18096 bytes
+===================================
+difficulty = 3 enable_prune=False
+takes 0.14 sec to find best move.
+Memory used: 18208 bytes
+===================================
+difficulty = 3 enable_prune=True
+takes 0.09000000000000001 sec to find best move.
+Memory used: 18188 bytes
+===================================           
+difficulty = 4 enable_prune=False          
+takes 0.81 sec to find best move.          
+Memory used: 18236 bytes         
+===================================        
+difficulty = 4 enable_prune=True           
+takes 0.31000000000000005 sec to find best move. 
+Memory used: 18416 bytes                   
+===================================        
+difficulty = 5 enable_prune=False          
+takes 4.58 sec to find best move.          
+Memory used: 18396 bytes                   
+===================================        
+difficulty = 5 enable_prune=True           
+takes 1.18 sec to find best move.
+Memory used: 17932 bytes
+===================================
+difficulty = 6 enable_prune=False
+takes 26.05 sec to find best move.
+Memory used: 18528 bytes
+===================================
+difficulty = 6 enable_prune=True
+takes 4.12 sec to find best move.
+Memory used: 18344 bytes
+===================================
